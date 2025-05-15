@@ -13,8 +13,10 @@ namespace ac_nowcoder_rankings_server {
     private:
         int Task_distribution_center(HTTP_request_data httpRequestData, HTTP_response_data &httpResponseData);
         //如果需要对HTTP请求的数据进行处理，继承后重写任务分配中心()
-        map<string,Evaluation_Data_Template> Get_Evaluation_Data(string contest,string cookie);
+        map<long long int,Evaluation_Data_Template> Get_Evaluation_Data(string contest,string cookie);
+        vector<Evaluation_Data_Template> Get_Evaluation_Data_Single_request(string contest,string cookie,int page,int max_pageSize);
+        map<long long int,map<long long int,Evaluation_Data_Template>>Memorize_the_assessment_records;
     };
 } // ac_nowcoder_rankings_server
-
+//下一个版本做一下Evaluation_Data_Template的记忆化互通
 #endif //AC_NOWCODER_RANKINGS_SERVER_H
