@@ -10,7 +10,7 @@
 namespace ac_nowcoder_rankings_server {
     string ac_nowcoder_rankings_server::get_nowcoder_contest_list(string contest) {
         string ac_nowcoder_rankings_server_str;
-
+        nowcoder_contest_list
         return ac_nowcoder_rankings_server_str;
     }
 

@@ -3,6 +3,7 @@
 //
 #include "../include/HTTP_Server_Framework/HTTP_Server_Framework.h"
 #include "Evaluation Data Template/Evaluation_Data_Template.h"
+#include "ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.h"
 #include "set"
 #ifndef AC_NOWCODER_RANKINGS_SERVER_H
 #define AC_NOWCODER_RANKINGS_SERVER_H
@@ -18,7 +19,7 @@ namespace ac_nowcoder_rankings_server {
         map<long long int,Evaluation_Data_Template> Get_Evaluation_Data(string contest,string cookie);
         vector<Evaluation_Data_Template> Get_Evaluation_Data_Single_request(string contest,string cookie,int page,int max_pageSize);
         map<long long int,map<long long int,Evaluation_Data_Template>>Memorize_the_assessment_records;
-        map<long long int,set<Evaluation_Data_Template>>nowcoder_contest_list;
+        map<long long int,map<long long int,ac_nowcoder_Ranking_data>,ac_nowcoder_Ranking_data_cmp>nowcoder_contest_list;
         string get_nowcoder_contest_list(string contest);
     };
 } // ac_nowcoder_rankings_server
