@@ -13,7 +13,8 @@ add_executable(ac_nowcoder_rankings main.cpp
         ac_nowcoder_rankings_server/tools_class/time_class.h
         ac_nowcoder_rankings_server/Task_distribution_center.cpp
         ac_nowcoder_rankings_server/tools_class/get_time_ms.cpp
-        ac_nowcoder_rankings_server/Get_Evaluation_Data_Single_request.cpp)
+        ac_nowcoder_rankings_server/Get_Evaluation_Data_Single_request.cpp
+        ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp)
 target_include_directories(ac_nowcoder_rankings PRIVATE include)
 target_link_directories(ac_nowcoder_rankings PRIVATE lib)
 target_link_libraries(ac_nowcoder_rankings PRIVATE libHTTP_Server_Framework.so)
