@@ -19,11 +19,13 @@ namespace ac_nowcoder_rankings_server {
     public:
         // 构造函数，初始化时向线程池添加任务
         ac_nowcoder_rankings_server() {
-           Thread_Pool::Task task1([this]() {
-                this->List_Update_Distribution_Center();
-            });
+            ac_nowcoder_rankings_server_thread_pool.set_Thread_Pool(100,5,10);
+            Thread_Pool::Task task1([this]() {
+                 this->List_Update_Distribution_Center();
+             });
             ac_nowcoder_rankings_server_thread_pool.addtanks(task1);
         }
+
         // 析构函数，设置关闭标志
         ~ac_nowcoder_rankings_server() {
             Shutdown_bj = 1;
@@ -62,10 +64,10 @@ namespace ac_nowcoder_rankings_server {
         queue<Listen_to_the_competition_Template> Listen_to_the_competition_queue;
         // 停止监听比赛，用于处理需要停止监听的比赛
         map<long long int, long long int> Stop_monitoring_the_competition;
-        // 榜单更新分配中心，负责协调列表更新任务
-        void List_Update_Distribution_Center();
         // 榜单更新函数，负责实际更新比赛列表
         void List_update();
+        // 榜单更新分配中心，负责协调列表更新任务
+        void List_Update_Distribution_Center();
         int nowcoder_contest_list_update(long long int contestId);
         // 线程池，用于并发处理任务，提高系统吞吐量
         Thread_Pool::Thread_Pool ac_nowcoder_rankings_server_thread_pool;

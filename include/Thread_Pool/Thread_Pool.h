@@ -41,10 +41,10 @@ namespace Thread_Pool {
     private:
         std::function<void()> func_; // 使用std::function封装无参任务
     public:
-        // 模板构造函数，接受任意可调用对象（如函数、lambda等）
-        template <typename Callable>
-        Task(Callable&& f) : func_(std::forward<Callable>(f)) {}
-
+        // 构造函数，接受任意可调用对象（如函数、lambda等）
+        Task(std::function<void()> func) {
+            func_=func;
+        }
         // 重载()操作符，使任务对象可以像函数一样被调用
         void operator()() {
             func_();
