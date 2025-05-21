@@ -32,6 +32,7 @@ namespace ac_nowcoder_rankings_server {
         // 互斥锁，用于保护评估记录和排名数据的线程安全
         mutex Memorize_the_assessment_records_mtx, ac_nowcoder_Ranking_data_cmp_mtx;
         mutex nowcoder_contest_list_mtx;
+        mutex nowcoder_contest_list_max_submissionId_mtx;
         mutex Memorize_the_assessment_records_max_submissionId_mtx;
         mutex Listen_to_the_competition_queue_mtx;
         mutex Stop_monitoring_the_competition_mtx;
@@ -47,11 +48,13 @@ namespace ac_nowcoder_rankings_server {
             long long int contestId, string cookie, int page, int max_pageSize);
 
         // 记忆化存储的评估记录，用于缓存评估数据以提高性能
-        map<long long int, map<long long int, Evaluation_Data_Template>> Memorize_the_assessment_records;
+        map<long long int, map<long long int, Evaluation_Data_Template, Evaluation_Data_cmp>> Memorize_the_assessment_records;
         // 记录每个比赛的最大提交ID，用于跟踪最新评估数据
         map<long long int, long long int> Memorize_the_assessment_records_max_submissionId;
-        // 存储牛客比赛榜单，使用自定义比较器进行排序
+        // 存储牛客比赛榜单，使用自定义比较器ac_nowcoder_Ranking_data_cmp进行排序，键为比赛ID，值为参赛者的排名数据
         map<long long int, map<long long int, ac_nowcoder_Ranking_data>, ac_nowcoder_Ranking_data_cmp> nowcoder_contest_list;
+        // 记录每个比赛的以及更新入排行榜内的最大测记录提交ID，用于跟踪最新提交数据，键为比赛ID，值为最大提交ID
+        map<long long int, long long int> nowcoder_contest_list_max_submissionId;
         // 监听比赛队列，用于处理需要监听的比赛
         queue<Listen_to_the_competition_Template> Listen_to_the_competition_queue;
         // 停止监听比赛，用于处理需要停止监听的比赛
@@ -60,8 +63,7 @@ namespace ac_nowcoder_rankings_server {
         void List_Update_Distribution_Center();
         // 榜单更新函数，负责实际更新比赛列表
         void List_update();
-
-
+        int nowcoder_contest_list_update(long long int contestId);
         // 线程池，用于并发处理任务，提高系统吞吐量
         Thread_Pool::Thread_Pool ac_nowcoder_rankings_server_thread_pool;
         int Shutdown_bj = 0;

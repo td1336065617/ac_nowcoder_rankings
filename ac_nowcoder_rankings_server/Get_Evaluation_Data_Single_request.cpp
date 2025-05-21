@@ -43,7 +43,7 @@ namespace ac_nowcoder_rankings_server {
             json j1_data_basicInfo, j1_data_data;
             j1_data_basicInfo = j1_data["basicInfo"]; // 获取基本信息
             long long int basicUid = j1_data_basicInfo["basicUid"].get<long long int>(); // 获取基础用户ID
-            long long int contestId = j1_data_basicInfo["contestId"].get<long long int>(); // 获取比赛ID
+            contestId = j1_data_basicInfo["contestId"].get<long long int>(); // 获取比赛ID
             long long int pageCount = j1_data_basicInfo["pageCount"].get<long long int>(); // 获取总页数
             long long int pageSize = j1_data_basicInfo["pageSize"].get<long long int>(); // 获取每页大小
             long long int statusCount = j1_data_basicInfo["statusCount"].get<long long int>(); // 获取状态数量

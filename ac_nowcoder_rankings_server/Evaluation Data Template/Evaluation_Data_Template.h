@@ -7,7 +7,21 @@
 
 namespace ac_nowcoder_rankings_server {
     /**
-     * @class Evaluation_Data_Template
+     * @struct Evaluation_Data_cmp
+     * @brief 该结构体用于比较两个长整型数值的大小。
+     */
+    struct Evaluation_Data_cmp {
+        /**
+         * @brief 重载比较运算符，用于比较两个长整型数值的大小。
+         * @param p1 第一个长整型数值。
+         * @param p2 第二个长整型数值。
+         * @return 如果p1大于p2，则返回true；否则返回false。
+         */
+        bool operator()(const long long int& p1, const long long int& p2) const {
+            return p1 > p2;
+        }
+    };
+    /**     * @class Evaluation_Data_Template
      * @brief 该类用于存储和操作评测数据的模板信息。
      */
     class Evaluation_Data_Template {

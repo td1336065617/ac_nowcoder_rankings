@@ -18,7 +18,8 @@ add_executable(ac_nowcoder_rankings main.cpp
         ac_nowcoder_rankings_server/List_Update/List_Update_Distribution_Center.cpp
         ac_nowcoder_rankings_server/List_Update/List_update.cpp
         ac_nowcoder_rankings_server/Listen_to_the_competition_Template/Listen_to_the_competition_Template.cpp
-        ac_nowcoder_rankings_server/Listen_to_the_competition_Template/Listen_to_the_competition_Template.h)
+        ac_nowcoder_rankings_server/Listen_to_the_competition_Template/Listen_to_the_competition_Template.h
+        ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp)
 target_include_directories(ac_nowcoder_rankings PRIVATE include)
 target_link_directories(ac_nowcoder_rankings PRIVATE lib)
 target_link_libraries(ac_nowcoder_rankings PRIVATE libHTTP_Server_Framework.so libThread_Pool.so)
