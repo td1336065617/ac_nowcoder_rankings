@@ -13,14 +13,16 @@ namespace ac_nowcoder_rankings_server {
     class ac_nowcoder_rankings_server : public HTTP_Server_Framework {
     public:
     private:
-        mutex Memorize_the_assessment_records_mtx;
+        mutex Memorize_the_assessment_records_mtx，ac_nowcoder_Ranking_data_cmp_mtx;
         int Task_distribution_center(HTTP_request_data httpRequestData, HTTP_response_data &httpResponseData);
         //如果需要对HTTP请求的数据进行处理，继承后重写任务分配中心()
         map<long long int,Evaluation_Data_Template> Get_Evaluation_Data(string contest,string cookie);
         vector<Evaluation_Data_Template> Get_Evaluation_Data_Single_request(string contest,string cookie,int page,int max_pageSize);
         map<long long int,map<long long int,Evaluation_Data_Template>>Memorize_the_assessment_records;
         map<long long int,map<long long int,ac_nowcoder_Ranking_data>,ac_nowcoder_Ranking_data_cmp>nowcoder_contest_list;
+
         string get_nowcoder_contest_list(string contest);
+
     };
 } // ac_nowcoder_rankings_server
 //下一个版本做一下Evaluation_Data_Template的记忆化互通

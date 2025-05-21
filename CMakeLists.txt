@@ -16,7 +16,9 @@ add_executable(ac_nowcoder_rankings main.cpp
         ac_nowcoder_rankings_server/Get_Evaluation_Data_Single_request.cpp
         ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp
         ac_nowcoder_rankings_server/ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.cpp
-        ac_nowcoder_rankings_server/ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.h)
+        ac_nowcoder_rankings_server/ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.h
+        include/Thread_Pool_sem/Thread_Pool_sem.cpp
+        include/Thread_Pool_sem/Thread_Pool_sem.h)
 target_include_directories(ac_nowcoder_rankings PRIVATE include)
 target_link_directories(ac_nowcoder_rankings PRIVATE lib)
-target_link_libraries(ac_nowcoder_rankings PRIVATE libHTTP_Server_Framework.so)
+target_link_libraries(ac_nowcoder_rankings PRIVATE libHTTP_Server_Framework.so libThread_Pool.so)
