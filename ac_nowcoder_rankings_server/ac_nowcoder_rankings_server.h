@@ -19,7 +19,7 @@ namespace ac_nowcoder_rankings_server {
     public:
         // 构造函数，初始化时向线程池添加任务
         ac_nowcoder_rankings_server() {
-            Thread_Pool::Task task1([this]() {
+           Thread_Pool::Task task1([this]() {
                 this->List_Update_Distribution_Center();
             });
             ac_nowcoder_rankings_server_thread_pool.addtanks(task1);

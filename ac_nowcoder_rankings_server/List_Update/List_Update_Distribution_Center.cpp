@@ -19,6 +19,7 @@ namespace ac_nowcoder_rankings_server {
                 });
                 // 将任务添加到线程池中
                 ac_nowcoder_rankings_server_thread_pool.addtanks(task1);
+
             }
             // 每次处理完队列后休眠5秒
             sleep(5);
