@@ -10,7 +10,14 @@ namespace ac_nowcoder_rankings_server {
         }
         int max_submissionId=nowcoder_contest_list_max_submissionId[contestId];
         nowcoder_contest_list_max_submissionId_mtx.unlock();
+        for (auto &x:  Memorize_the_assessment_records[contestId]) {
+            if (x.first==max_submissionId) {
+                break;
+            }
+            if (x.second.get_status_message()=="AC") {
 
+            }
+        }
         return 1;
     }
 }

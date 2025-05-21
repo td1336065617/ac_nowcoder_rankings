@@ -7,6 +7,7 @@
 #include "set"
 #include "../include/Thread_Pool/Thread_Pool.h"
 #include "Listen_to_the_competition_Template/Listen_to_the_competition_Template.h"
+#include "Contest_Info_Template/Contest_Info_Template.h"
 #ifndef AC_NOWCODER_RANKINGS_SERVER_H
 #define AC_NOWCODER_RANKINGS_SERVER_H
 
@@ -36,6 +37,7 @@ namespace ac_nowcoder_rankings_server {
         mutex Memorize_the_assessment_records_max_submissionId_mtx;
         mutex Listen_to_the_competition_queue_mtx;
         mutex Stop_monitoring_the_competition_mtx;
+        mutex Contest_Info_map_mtx;
 
         // 任务分配中心，处理HTTP请求并生成响应
         int Task_distribution_center(HTTP_request_data httpRequestData, HTTP_response_data &httpResponseData);
@@ -47,6 +49,7 @@ namespace ac_nowcoder_rankings_server {
         vector<Evaluation_Data_Template> Get_Evaluation_Data_Single_request(
             long long int contestId, string cookie, int page, int max_pageSize);
 
+        map<long long int,Contest_Info_Template>Contest_Info_map;
         // 记忆化存储的评估记录，用于缓存评估数据以提高性能
         map<long long int, map<long long int, Evaluation_Data_Template, Evaluation_Data_cmp>> Memorize_the_assessment_records;
         // 记录每个比赛的最大提交ID，用于跟踪最新评估数据
@@ -69,6 +72,7 @@ namespace ac_nowcoder_rankings_server {
         int Shutdown_bj = 0;
         // 获取指定比赛的牛客比赛榜单，返回榜单的字符串表示
         string get_nowcoder_contest_list(string contest);
+        int add_Contest_Info(long long int contestId, string cookie);
     };
 } // ac_nowcoder_rankings_server
 // 下一个版本计划实现Evaluation_Data_Template的记忆化互通
