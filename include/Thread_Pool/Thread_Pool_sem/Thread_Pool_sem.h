@@ -31,19 +31,20 @@
 #include <sys/epoll.h>
 #include <signal.h>
 #include <semaphore.h>
-class HTTP_server;
-class Thread_Pool_sem
-{
-private:
-    sem_t thread_pool_sem;
+namespace Thread_Pool {
+    class Thread_Pool_sem
+    {
+    private:
+        sem_t thread_pool_sem;
 
-public:
-    Thread_Pool_sem();
-    ~Thread_Pool_sem();
-    int addsem();//增加信号量
-    int waitsem(timespec wait_time);//记时等待信号
-    int waitsem();//不记时等待；
-    int reducesem();//减少信号量
-    int getsem();//获取信号量的值
-};
+    public:
+        Thread_Pool_sem();
+        ~Thread_Pool_sem();
+        int addsem();//增加信号量
+        int waitsem(timespec wait_time);//记时等待信号
+        int waitsem();//不记时等待；
+        int reducesem();//减少信号量
+        int getsem();//获取信号量的值
+    };
+}
 #endif //CESHI1_THREAD_POOL_SEM_H
