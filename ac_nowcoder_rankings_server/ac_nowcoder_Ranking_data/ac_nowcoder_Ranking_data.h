@@ -10,19 +10,21 @@
 namespace ac_nowcoder_rankings_server {
     // 题目状态结构体，记录题目相关信息
     struct Title_status {
+        int Submission_status;
         int Number_of_errors;  // 错误提交次数
         int status;            // 题目状态(0:未完成,1:已完成)
-        int achh,acmm,acss;    // 完成时间(时,分,秒)
+        long long int AC_time;    // 完成时间
+        bool first_Blood;
     };
 
     // 用户排名数据类
     class ac_nowcoder_Ranking_data {
     public:
-        int userid;            // 用户ID
-        int username;          // 用户名
-        int ranking;           // 当前排名
-        int acceptedCount;     // 已通过题目数量
-        int penalty_Time;      // 罚时(单位:分钟)
+        long long int  userid;            // 用户ID
+        std::string username;          // 用户名
+        long long int  ranking;           // 当前排名
+        long long int  acceptedCount;     // 已通过题目数量
+        long long int penalty_Time;      // 罚时(单位:毫秒)
         std::map<std::string,Title_status>Title_status_map; // 题目状态映射表
     };
 

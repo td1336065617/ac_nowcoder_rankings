@@ -6,6 +6,7 @@ namespace ac_nowcoder_rankings_server {
     long long int time_class::get_time_ms() {
         struct timeval currentTime;
         gettimeofday(&currentTime, NULL);
+        // 返回的时间单位是毫秒
         return currentTime.tv_sec * 1000 + currentTime.tv_usec / 1000;
     }
 }
