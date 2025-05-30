@@ -60,7 +60,7 @@ namespace ac_nowcoder_rankings_server {
         // 初始化提交ID追踪变量
         long long int All_min_submission_id = LLONG_MAX, min_submission_id = LLONG_MAX;
         long long int max_submission_id = 0; // 记录最大提交ID
-
+        long long int Unfinished_assessment=1e17;
         // 分页获取所有评估数据
         for (int i = 0; i < pageCount + 10; i++) {
             int max_submission_bj = 0; // 提前终止标志
@@ -76,7 +76,20 @@ namespace ac_nowcoder_rankings_server {
                 Memorize_the_assessment_records[contestId][evaluation_data_templates.get_submission_id()] =
                         evaluation_data_templates;
                 Memorize_the_assessment_records_mtx.unlock();
-
+                if (evaluation_data_templates.get_status_message()=="正在判题") {
+                    Unfinished_assessment=min(Unfinished_assessment,evaluation_data_templates.get_submission_id());
+                    Memorize_the_assessment_records_Supplementary_order_mtx.lock();
+                    Memorize_the_assessment_records_Supplementary_order[contestId][evaluation_data_templates.get_submission_id()]=0;
+                    Memorize_the_assessment_records_Supplementary_order_mtx.unlock();
+                }
+                Memorize_the_assessment_records_Supplementary_order_mtx.lock();
+                if ( Memorize_the_assessment_records_Supplementary_order[contestId].find(evaluation_data_templates.get_submission_id())
+                    !=Memorize_the_assessment_records_Supplementary_order[contestId].end()) {
+                    if (evaluation_data_templates.get_status_message()!="正在判题") {
+                    Memorize_the_assessment_records_Supplementary_order[contestId][evaluation_data_templates.get_submission_id()]=1;
+                    }
+                }
+                Memorize_the_assessment_records_Supplementary_order_mtx.unlock();
                 // 更新最小提交ID
                 min_submission_id = min(min_submission_id, evaluation_data_templates.get_submission_id());
 
@@ -89,7 +102,6 @@ namespace ac_nowcoder_rankings_server {
                     break;
                 }
                 Memorize_the_assessment_records_max_submissionId_mtx.unlock();
-
                 // 更新最大提交ID
                 max_submission_id = max(max_submission_id, evaluation_data_templates.get_submission_id());
             }
@@ -101,7 +113,10 @@ namespace ac_nowcoder_rankings_server {
 
         // 线程安全地更新最大提交ID缓存
         Memorize_the_assessment_records_max_submissionId_mtx.lock();
+        if(Unfinished_assessment==1e17)
         Memorize_the_assessment_records_max_submissionId[contestId] = max_submission_id;
+        else
+            Memorize_the_assessment_records_max_submissionId[contestId]=Unfinished_assessment;
         Memorize_the_assessment_records_max_submissionId_mtx.unlock();
 
         // 输出当前比赛记录数

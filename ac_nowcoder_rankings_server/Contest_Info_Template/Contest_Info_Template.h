@@ -1,10 +1,10 @@
 //
 // Created by fsptd on 25-5-21.
 //
-#include <string>
 #ifndef CONTEST_INFO_TEMPLATE_H
 #define CONTEST_INFO_TEMPLATE_H
-
+#include <string>
+#include <map>
 namespace ac_nowcoder_rankings_server {
     // 比赛信息模板类
     struct problemData {
