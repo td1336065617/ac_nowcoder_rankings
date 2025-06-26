@@ -11,7 +11,7 @@ namespace ac_nowcoder_rankings_server {
         if (nowcoder_contest_list_max_submissionId.find(contestId) == nowcoder_contest_list_max_submissionId.end()) {
             nowcoder_contest_list_max_submissionId[contestId] = 0;
         }
-        // 获取当前比赛的最大提交ID
+        // 获取当前比赛已经更新入比赛的最大提交ID
         int max_submissionId = nowcoder_contest_list_max_submissionId[contestId];
         // 解锁最大提交ID的互斥锁
         nowcoder_contest_list_max_submissionId_mtx.unlock();
@@ -22,6 +22,7 @@ namespace ac_nowcoder_rankings_server {
         Contest_Info_Template contest_info_template = Contest_Info_map[contestId];
         // 解锁比赛信息映射的互斥锁
         Contest_Info_map_mtx.unlock();
+
 
         // 遍历当前比赛的评估记录
         for (auto &x: Memorize_the_assessment_records[contestId]) {

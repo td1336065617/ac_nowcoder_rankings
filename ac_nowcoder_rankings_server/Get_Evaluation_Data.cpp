@@ -62,7 +62,7 @@ namespace ac_nowcoder_rankings_server {
         long long int max_submission_id = 0; // 记录最大提交ID
         long long int Unfinished_assessment=1e17;
         // 分页获取所有评估数据
-        for (int i = 0; i < pageCount + 10; i++) {
+        for (int i = 0; i < pageCount + 20; i++) {
             int max_submission_bj = 0; // 提前终止标志
 
             // 获取当前页的评估数据

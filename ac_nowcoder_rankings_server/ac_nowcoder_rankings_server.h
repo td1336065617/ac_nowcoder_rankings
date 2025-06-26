@@ -35,7 +35,9 @@ namespace ac_nowcoder_rankings_server {
 
     private:
         // 互斥锁，用于保护评估记录和排名数据的线程安全
-        mutex Memorize_the_assessment_records_mtx, ac_nowcoder_Ranking_data_cmp_mtx;
+        mutex Memorize_the_assessment_records_mtx_mtx;
+        map<long long int,mutex>Memorize_the_assessment_records_mtx;
+        mutex ac_nowcoder_Ranking_data_cmp_mtx;
         mutex nowcoder_contest_list_mtx;
         mutex nowcoder_contest_list_max_submissionId_mtx;
         mutex Memorize_the_assessment_records_max_submissionId_mtx;
@@ -44,8 +46,9 @@ namespace ac_nowcoder_rankings_server {
         mutex Contest_Info_map_mtx;
         mutex nowcoder_contest_set_mtx;
         mutex Unrecorded_Assessment_Status_Map_mtx;
-        mutex Memorize_the_assessment_records_Supplementary_order_mtx;
-
+        mutex Memorize_the_assessment_records_Supplementary_order_mtx_mtx;
+        map<long long int,mutex> Memorize_the_assessment_records_Supplementary_order_mtx;
+        mutex nowcoder_contest_map_mtx;
         // 任务分配中心，处理HTTP请求并生成响应
         int Task_distribution_center(HTTP_request_data httpRequestData, HTTP_response_data &httpResponseData);
 
@@ -68,7 +71,7 @@ namespace ac_nowcoder_rankings_server {
         map<long long int, map<long long int, ac_nowcoder_Ranking_data>> nowcoder_contest_map;
         //通过set自定义排序规则，排序排名数据。
         map<long long int, set<ac_nowcoder_Ranking_data>>nowcoder_contest_set;
-        // 记录每个比赛的以及更新入排行榜内的最大测记录提交ID，用于跟踪最新提交数据，键为比赛ID，值为最大提交ID
+        // 记录每个比赛更新入排行榜内的最大测记录提交ID，用于跟踪最新提交数据，键为比赛ID，值为最大提交ID
         map<long long int, long long int> nowcoder_contest_list_max_submissionId;
         // 监听比赛队列，用于处理需要监听的比赛
         queue<Listen_to_the_competition_Template> Listen_to_the_competition_queue;
