@@ -75,12 +75,12 @@ namespace ac_nowcoder_rankings_server {
             }
             nowcoder_contest_map_mtx[contestId].lock();
             ac_nowcoder_Ranking_data ac_nowcoder_ranking_data1 = nowcoder_contest_map[contestId][x.second.
-               get_user_id()];
+                get_user_id()];
             nowcoder_contest_map_mtx[contestId].unlock();
             nowcoder_contest_set[contestId].erase(ac_nowcoder_ranking_data1);
 
             ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].Submission_record[x.second.
-                      get_submission_id()] = x.second;
+                get_submission_id()] = x.second;
 
             contest_info_template.problemData_map[x.second.get_index()].submitCount++;
 
@@ -91,7 +91,7 @@ namespace ac_nowcoder_rankings_server {
                 != Unrecorded_Assessment_Status_Map.end()) {
                 Unrecorded_Assessment_Status_Map_mtx.unlock();
                 continue;
-                }
+            }
             // 解锁未记录评估状态映射的互斥锁
             Unrecorded_Assessment_Status_Map_mtx.unlock();
             if (x.second.get_status_message() == "正在判题") {
@@ -107,7 +107,7 @@ namespace ac_nowcoder_rankings_server {
                 if (nowcoder_contest_map[contestId][x.second.get_user_id()].Title_status_map[x.second.get_index()].
                     status) {
                     continue;
-                }else {
+                } else {
                     // 标记当前题目为正确
                     ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].status = 1;
                     // 计算当前题目的AC时间(毫秒为单位)
@@ -120,7 +120,8 @@ namespace ac_nowcoder_rankings_server {
                         get_index()].AC_time;
                     // 增加用户的AC题目数量
                     ac_nowcoder_ranking_data1.acceptedCount++;
-                    ac_nowcoder_ranking_data1.penalty_Time += ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].AC_time;
+                    ac_nowcoder_ranking_data1.penalty_Time += ac_nowcoder_ranking_data1.Title_status_map[x.second.
+                        get_index()].AC_time;
                     // 如果当前题目的提交状态为0，则更新为1，标识本题已产生提交
                     if (ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].Submission_status == 0) {
                         ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].Submission_status = 1;
@@ -132,20 +133,20 @@ namespace ac_nowcoder_rankings_server {
                         contest_info_template.problemData_map[x.second.get_index()].status = 1;
                         ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].first_Blood = true;
                     }
-
                 }
-
             } else {
                 // 非AC状态的处理逻辑暂未实现
                 if (ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].Submission_status == 0) {
                     ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].Submission_status = 1;
                 }
                 ac_nowcoder_ranking_data1.Title_status_map[x.second.get_index()].Number_of_errors++;
-
             }
             nowcoder_contest_map[contestId][ac_nowcoder_ranking_data1.userid] = ac_nowcoder_ranking_data1;
             // 将更新后的用户数据插入比赛集合
             nowcoder_contest_set[contestId].insert(ac_nowcoder_ranking_data1);
+        }
+        for (auto &x:Memorize_the_assessment_records_Supplementary_order[contestId]) {
+            Memorize_the_assessment_records[contestId][x.first];
         }
         nowcoder_contest_set_mtx[contestId].unlock();
         nowcoder_contest_map_mtx[contestId].unlock();
