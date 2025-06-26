@@ -29,8 +29,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="更新">
+      <change afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,6 +254,11 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ac_nowcoder_rankings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ac_nowcoder_rankings" TARGET_NAME="ac_nowcoder_rankings" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ac_nowcoder_rankings" RUN_TARGET_NAME="ac_nowcoder_rankings">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -285,7 +293,7 @@
       <workItem from="1750943503677" duration="923000" />
       <workItem from="1750918528541" duration="369000" />
       <workItem from="1750918908558" duration="6623000" />
-      <workItem from="1750944603731" duration="756000" />
+      <workItem from="1750944603731" duration="3214000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -343,7 +351,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750944713699</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="更新">
+      <option name="closed" value="true" />
+      <created>1750945363554</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1750945363554</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

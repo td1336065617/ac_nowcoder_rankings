@@ -93,6 +93,7 @@ namespace ac_nowcoder_rankings_server {
 
         int nowcoder_contest_list_update(long long int contestId);
 
+        int update_ac_nowcoder_ranking_data(long long int contestId,Contest_Info_Template contest_info_template, Evaluation_Data_Template evaluation_data_template,bool Supplementary_order);
         // 线程池，用于并发处理任务，提高系统吞吐量
         Thread_Pool::Thread_Pool ac_nowcoder_rankings_server_thread_pool;
         int Shutdown_bj = 0;

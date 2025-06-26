@@ -25,6 +25,7 @@ add_executable(ac_nowcoder_rankings main.cpp
         ac_nowcoder_rankings_server/Task_distribution_center.cpp
         include/Thread_Pool/Thread_Pool.h
         include/HTTP_Server_Framework/HTTP_Server_Framework.h
+        ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp
 )
 target_include_directories(ac_nowcoder_rankings PRIVATE include)
 target_link_directories(ac_nowcoder_rankings PRIVATE lib)
