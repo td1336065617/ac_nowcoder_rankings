@@ -16,7 +16,7 @@ namespace ac_nowcoder_rankings_server {
         int status=0;             // 题目状态：0表示未完成，1表示已完成
         long long int AC_time=0;  // 完成时间：记录用户完成该题目的时间，单位为毫秒
         bool first_Blood=false;       // 是否为首杀：true表示用户是第一个完成该题目的人，false表示不是
-        int Submitted_not_completed_num;
+        int Submitted_not_completed_num;//已经提交但未完成测评的测评条数。
         std::map<long long int,Evaluation_Data_Template>Submission_record;
 
     };
