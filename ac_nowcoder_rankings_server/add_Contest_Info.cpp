@@ -88,10 +88,14 @@ namespace ac_nowcoder_rankings_server {
             Listen_to_the_competition_queue_mtx.lock();
             Listen_to_the_competition_queue.push(listen_to_the_competition_template);
             Listen_to_the_competition_queue_mtx.unlock();
+
             Memorize_the_assessment_records_mtx_mtx.lock();
             Memorize_the_assessment_records_mtx[contestId];
             Memorize_the_assessment_records_mtx_mtx.unlock();
+
             Memorize_the_assessment_records_Supplementary_order_mtx_mtx.lock();
+            Memorize_the_assessment_records_Supplementary_order_mtx[contestId];
+            Memorize_the_assessment_records_Supplementary_order_mtx_mtx.unlock();
 
         } catch (const std::exception& e) {
             // 捕获并处理标准异常

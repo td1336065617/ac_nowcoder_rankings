@@ -6,7 +6,7 @@
 #define AC_NOWCODER_RANKING_DATA_H
 #include "map"
 #include "string"
-
+#include "../Evaluation Data Template/Evaluation_Data_Template.h"
 namespace ac_nowcoder_rankings_server {
     // 题目状态结构体，用于记录题目的相关状态信息
     struct Title_status {
