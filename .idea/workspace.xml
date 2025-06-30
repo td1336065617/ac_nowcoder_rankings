@@ -28,10 +28,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="更新 基本完成测评信息更新入榜单的函数，下一步工作，检查功能是否存在缺陷。2025 6 26 22 53">
+    <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="完善注释">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,11 +250,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ac_nowcoder_rankings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ac_nowcoder_rankings" TARGET_NAME="ac_nowcoder_rankings" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ac_nowcoder_rankings" RUN_TARGET_NAME="ac_nowcoder_rankings">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -291,7 +284,8 @@
       <workItem from="1750943503677" duration="923000" />
       <workItem from="1750918528541" duration="369000" />
       <workItem from="1750918908558" duration="6623000" />
-      <workItem from="1750944603731" duration="3569000" />
+      <workItem from="1750944603731" duration="3808000" />
+      <workItem from="1751283731188" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -365,7 +359,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750949614407</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="完善注释">
+      <option name="closed" value="true" />
+      <created>1750950126978</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1750950126978</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -379,6 +381,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="更新" />
     <MESSAGE value="更新 基本完成测评信息更新入榜单的函数，下一步工作，检查功能是否存在缺陷。2025 6 26 22 53" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新 基本完成测评信息更新入榜单的函数，下一步工作，检查功能是否存在缺陷。2025 6 26 22 53" />
+    <MESSAGE value="完善注释" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善注释" />
   </component>
 </project>
