@@ -20,6 +20,9 @@ namespace ac_nowcoder_rankings_server {
         int Title_number; // 题目数量
         long long int contestEndTime; // 比赛结束时间
         long long int contestBeginTime; // 比赛开始时间
+        int sealing_Status_code;//本次比赛是否存在封榜
+        long long int Time_of_sealing;//封榜时间
+        long long int Time_of_release;//解榜时间
         std::string rankType; // 排名类型
         std::map<std::string , problemData>problemData_map; // 题目数据映射表，键为题目ID，值为题目数据
     };

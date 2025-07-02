@@ -30,6 +30,15 @@
   <component name="ChangeListManager">
     <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="完善注释">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Contest_Info_Template/Contest_Info_Template.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Contest_Info_Template/Contest_Info_Template.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Evaluation Data Template/Evaluation_Data_Template.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Evaluation Data Template/Evaluation_Data_Template.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_Update_Distribution_Center.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_Update_Distribution_Center.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_update.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Task_distribution_center.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Task_distribution_center.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -286,6 +295,9 @@
       <workItem from="1750918908558" duration="6623000" />
       <workItem from="1750944603731" duration="3808000" />
       <workItem from="1751283731188" duration="5000" />
+      <workItem from="1751269350278" duration="1241000" />
+      <workItem from="1751435384507" duration="191000" />
+      <workItem from="1751435587132" duration="11731000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />

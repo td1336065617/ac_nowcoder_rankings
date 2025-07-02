@@ -6,11 +6,24 @@
 namespace ac_nowcoder_rankings_server {
     /**
      * @brief 更新牛客比赛排名数据
-     * @param contestId 比赛ID
-     * @param contest_info_template 比赛信息模板
-     * @param evaluation_data_template 评测数据模板
-     * @param Supplementary_order 是否为补充订单
-     * @return 操作结果(1表示成功)
+     * @param contestId 比赛ID，唯一标识一场比赛
+     * @param contest_info_template 比赛信息模板，包含比赛基础信息如题目数量、封榜时间等
+     * @param evaluation_data_template 评测数据模板，包含用户提交的评测结果信息
+     * @param Supplementary_order 是否为补充订单，用于标记是否为后期补充的评测数据
+     * @return 操作结果，1表示成功，其他值表示失败
+     *
+     * 功能说明：
+     * 1. 检查用户是否已存在，不存在则初始化新用户数据
+     * 2. 线程安全地获取用户当前排名数据
+     * 3. 处理封榜期间的提交数据
+     * 4. 记录提交信息并更新题目提交计数
+     * 5. 过滤不需要记录的评测状态(如编译错误等)
+     * 6. 处理不同评测状态：
+     *    - 正在判题：更新提交状态
+     *    - 答案正确：计算AC时间、罚时，更新AC计数，处理首杀
+     *    - 其他状态：增加错误计数
+     * 7. 特殊处理补充订单的情况
+     * 8. 更新用户数据并重新插入比赛集合
      */
     int ac_nowcoder_rankings_server::update_ac_nowcoder_ranking_data(long long int contestId,
                                                                      Contest_Info_Template contest_info_template,
@@ -40,7 +53,12 @@ namespace ac_nowcoder_rankings_server {
         nowcoder_contest_map_mtx[contestId].unlock();
         // 从比赛集合中移除旧数据
         nowcoder_contest_set[contestId].erase(ac_nowcoder_ranking_data1);
-
+        if (contest_info_template.sealing_Status_code&&contest_info_template.Time_of_sealing<=evaluation_data_template.get_submit_time()&&Supplementary_order!=2) {
+            evaluation_data_template.set_status_message("正在判题");
+            evaluation_data_template.set_memory(0);
+            evaluation_data_template.set_time(0);
+            Memorize_the_assessment_records_Supplementary_order[contestId][evaluation_data_template.get_submission_id()]=1;
+        }
         // 记录当前提交信息
         ac_nowcoder_ranking_data1.Title_status_map[evaluation_data_template.get_index()].Submission_record[
             evaluation_data_template.
@@ -63,12 +81,12 @@ namespace ac_nowcoder_rankings_server {
 
         // 处理不同评测状态
         if (evaluation_data_template.get_status_message() == "正在判题") {
-            // 更新判题状态
+            // 更新提交状态
             if (ac_nowcoder_ranking_data1.Title_status_map[evaluation_data_template.get_index()].Submission_status ==
                 0) {
                 ac_nowcoder_ranking_data1.Title_status_map[evaluation_data_template.get_index()].Submission_status = 1;
             }
-            // 增加未完成提交计数
+            // 增加未完成测评的提交计数
             ac_nowcoder_ranking_data1.Title_status_map[evaluation_data_template.get_index()].Submitted_not_completed_num
                     ++;
         }
@@ -114,7 +132,7 @@ namespace ac_nowcoder_rankings_server {
             ac_nowcoder_ranking_data1.Title_status_map[evaluation_data_template.get_index()].Number_of_errors++;
         }
 
-        // 处理补充订单的特殊情况
+        // 减少未完成测评的提交计数
         if (Supplementary_order) {
             ac_nowcoder_ranking_data1.Title_status_map[evaluation_data_template.get_index()].Submitted_not_completed_num
                     --;

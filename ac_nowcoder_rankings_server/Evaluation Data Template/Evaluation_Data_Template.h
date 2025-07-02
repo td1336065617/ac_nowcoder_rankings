@@ -264,7 +264,7 @@ namespace ac_nowcoder_rankings_server {
     private:
         long long int memory;        ///< 内存使用量
         long long int length;        ///< 代码长度
-        std::string index;           ///< 索引
+        std::string index;           ///< 题目赛时编号
         std::string language;        ///< 编程语言
         std::string userName;        ///< 用户名
         long long int userId;        ///< 用户ID
