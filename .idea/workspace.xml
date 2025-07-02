@@ -28,7 +28,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。" />
+    <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="1.2.1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,13 +42,11 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;td1336065617&quot;
-  }
+  &quot;lastFilter&quot;: {}
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
@@ -286,7 +287,7 @@
       <workItem from="1751283731188" duration="5000" />
       <workItem from="1751269350278" duration="1241000" />
       <workItem from="1751435384507" duration="191000" />
-      <workItem from="1751435587132" duration="12054000" />
+      <workItem from="1751435587132" duration="12804000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -384,7 +385,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751468527426</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="1.2.1">
+      <option name="closed" value="true" />
+      <created>1751468804052</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1751468804052</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -395,11 +404,55 @@
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="更新" />
     <MESSAGE value="更新 基本完成测评信息更新入榜单的函数，下一步工作，检查功能是否存在缺陷。2025 6 26 22 53" />
     <MESSAGE value="完善注释" />
     <MESSAGE value="完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。" />
+    <MESSAGE value="1.2.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.2.1" />
   </component>
 </project>
