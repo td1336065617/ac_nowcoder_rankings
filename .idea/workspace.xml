@@ -28,18 +28,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="完善注释">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Contest_Info_Template/Contest_Info_Template.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Contest_Info_Template/Contest_Info_Template.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Evaluation Data Template/Evaluation_Data_Template.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Evaluation Data Template/Evaluation_Data_Template.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_Update_Distribution_Center.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_Update_Distribution_Center.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_update.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Task_distribution_center.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Task_distribution_center.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -297,7 +286,7 @@
       <workItem from="1751283731188" duration="5000" />
       <workItem from="1751269350278" duration="1241000" />
       <workItem from="1751435384507" duration="191000" />
-      <workItem from="1751435587132" duration="11731000" />
+      <workItem from="1751435587132" duration="12054000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -379,7 +368,23 @@
       <option name="project" value="LOCAL" />
       <updated>1750950126978</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。">
+      <option name="closed" value="true" />
+      <created>1751468401989</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1751468401989</updated>
+    </task>
+    <task id="LOCAL-00012" summary="完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。">
+      <option name="closed" value="true" />
+      <created>1751468527426</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1751468527426</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -394,6 +399,7 @@
     <MESSAGE value="更新" />
     <MESSAGE value="更新 基本完成测评信息更新入榜单的函数，下一步工作，检查功能是否存在缺陷。2025 6 26 22 53" />
     <MESSAGE value="完善注释" />
-    <option name="LAST_COMMIT_MESSAGE" value="完善注释" />
+    <MESSAGE value="完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。" />
   </component>
 </project>
