@@ -30,8 +30,16 @@ namespace ac_nowcoder_rankings_server {
             long long int Time_of_release= convert_time_string_to_ms(httpRequestData.http_data_value["Time_of_release"]);
 
             // 添加竞赛信息到系统
-            add_Contest_Info(std::stoi(contest_id), cookie,sealing_Status_code,Time_of_sealing,Time_of_release);
+            add_Contest_Info(std::stoll(contest_id), cookie,sealing_Status_code,Time_of_sealing,Time_of_release);
             httpResponseData.http_response_data_value="yes";
+        }  else if (httpRequestData.url=="/get_nowcoder_contest_info.jk") {
+            httpRequestData.http_data_value["contest"]="106871";
+            string  ac_nowcoder_contest_info_str=get_nowcoder_contest_info(std::stoll(httpRequestData.http_data_value["contest"]));
+            httpResponseData.http_response_data_value=ac_nowcoder_contest_info_str;
+        } else if (httpRequestData.url=="/get_nowcoder_contest_info.jk") {
+            httpRequestData.http_data_value["contest"]="106871";
+            string  ac_nowcoder_contest_info_str=get_nowcoder_contest_info(std::stoll(httpRequestData.http_data_value["contest"]));
+            httpResponseData.http_response_data_value=ac_nowcoder_contest_info_str;
         }
 
         return 0;

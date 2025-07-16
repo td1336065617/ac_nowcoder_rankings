@@ -8,8 +8,11 @@
 #include "../tools_class/time_class.h"
 #include"nlohmann/json.hpp"
 namespace ac_nowcoder_rankings_server {
-    string ac_nowcoder_rankings_server::get_nowcoder_contest_list(string contest) {
+    string ac_nowcoder_rankings_server::get_nowcoder_contest_list(long long int contestId) {
         string ac_nowcoder_rankings_server_str;
+        nlohmann::json ac_nowcoder_rankings_server_json;
+        ac_nowcoder_rankings_server_json["contestId"] = contestId;
+        
         return ac_nowcoder_rankings_server_str;
     }
 

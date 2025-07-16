@@ -170,8 +170,8 @@ namespace ac_nowcoder_rankings_server {
          * @param contest 比赛ID字符串
          * @return 格式化后的榜单HTML/JSON
          */
-        string get_nowcoder_contest_list(string contest);
-
+        string get_nowcoder_contest_list(long long int contestId);
+        string get_nowcoder_contest_info(long long int contestId);
         /**
          * @brief 添加新比赛
          * @param contestId 比赛ID

@@ -29,8 +29,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="1.2.1">
+      <change afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_25-7-2_11_13____.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_25-7-2_下午11_13_取消提交了更改_[更改]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Task_distribution_center.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Task_distribution_center.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,7 +293,11 @@
       <workItem from="1751283731188" duration="5000" />
       <workItem from="1751269350278" duration="1241000" />
       <workItem from="1751435384507" duration="191000" />
-      <workItem from="1751435587132" duration="12804000" />
+      <workItem from="1751435587132" duration="13505000" />
+      <workItem from="1752094133639" duration="667000" />
+      <workItem from="1752674792727" duration="2085000" />
+      <workItem from="1752651916704" duration="216000" />
+      <workItem from="1752652151579" duration="917000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -393,7 +403,23 @@
       <option name="project" value="LOCAL" />
       <updated>1751468804052</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="1.2.1">
+      <option name="closed" value="true" />
+      <created>1751469301129</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1751469301129</updated>
+    </task>
+    <task id="LOCAL-00015" summary="1.2.1">
+      <option name="closed" value="true" />
+      <created>1751469336274</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1751469336274</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
