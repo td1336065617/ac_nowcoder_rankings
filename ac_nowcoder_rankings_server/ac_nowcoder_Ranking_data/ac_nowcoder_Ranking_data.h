@@ -26,7 +26,7 @@ namespace ac_nowcoder_rankings_server {
     public:
         long long int  userid=-1;            // 用户ID：唯一标识用户
         std::string username="";          // 用户名：用户的昵称
-        long long int  ranking=-1;           // 当前排名：用户在排行榜中的位置
+        mutable long long int  ranking=0;           // 当前排名：用户在排行榜中的位置
         long long int  acceptedCount=0;     // 已通过题目数量：用户已完成的题目数量
         long long int penalty_Time=0;      // 罚时：用户的总罚时，单位为毫秒
         long long int ac_Finally_time=0;   // 最后通过时间：用户最后通过题目的时间，单位为毫秒
