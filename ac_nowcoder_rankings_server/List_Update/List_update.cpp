@@ -5,10 +5,12 @@
 
 namespace ac_nowcoder_rankings_server {
     // 更新竞赛列表的主函数
-    // 1. 处理竞赛队列中的竞赛
-    // 2. 检查是否需要停止监控竞赛
-    // 3. 更新竞赛评估数据
-    // 4. 更新竞赛列表并重新入队
+    // 1. 从竞赛队列中取出一个竞赛进行处理
+    // 2. 判断该竞赛是否在停止监控列表中，如果在则移除并跳过后续处理
+    // 3. 检查竞赛是否满足停止监控条件（已结束且无待处理数据），若满足则加入停止监控列表
+    // 4. 若竞赛未结束或存在补充评估记录，则获取其评估数据
+    // 5. 更新竞赛相关列表信息
+    // 6. 将竞赛重新放入队列尾部，以便循环处理
     void ac_nowcoder_rankings_server::List_update() {
         // 如果竞赛队列不为空则进行处理
         if (Listen_to_the_competition_queue.size()) {
@@ -58,7 +60,7 @@ namespace ac_nowcoder_rankings_server {
 
                 // 更新竞赛列表
                 nowcoder_contest_list_update(listen_to_the_competition1.contest_id);
-
+                update_nowcoder_contest_set_json_str(listen_to_the_competition1.contest_id);
                 // 线程安全操作：将竞赛重新加入队列尾部
                 Listen_to_the_competition_queue_mtx.lock();
                 Listen_to_the_competition_queue.push(listen_to_the_competition1);
