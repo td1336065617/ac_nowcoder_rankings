@@ -29,9 +29,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="1.2.2 // 编写后端接口">
+      <change afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Update_Memorize_the_assessment_records_str.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Get_Evaluation_Data.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Get_Evaluation_Data.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,6 +254,11 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ac_nowcoder_rankings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ac_nowcoder_rankings" TARGET_NAME="ac_nowcoder_rankings" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ac_nowcoder_rankings" RUN_TARGET_NAME="ac_nowcoder_rankings">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -294,6 +303,10 @@
       <workItem from="1752651916704" duration="216000" />
       <workItem from="1752652151579" duration="5422000" />
       <workItem from="1752762618683" duration="1650000" />
+      <workItem from="1752993839076" duration="612000" />
+      <workItem from="1753074926538" duration="1205000" />
+      <workItem from="1753335552883" duration="415000" />
+      <workItem from="1753335987827" duration="3056000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />

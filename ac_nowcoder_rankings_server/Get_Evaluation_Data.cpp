@@ -135,7 +135,7 @@ namespace ac_nowcoder_rankings_server {
 
         /* 输出当前比赛记录数 */
         cout << Memorize_the_assessment_records[contestId].size() << endl;
-
+        Update_Memorize_the_assessment_records_str(contestId);
         return 1; // 执行成功
     }
 } // ac_nowcoder_rankings_server

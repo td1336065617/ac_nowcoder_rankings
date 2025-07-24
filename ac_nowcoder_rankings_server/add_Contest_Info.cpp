@@ -107,6 +107,10 @@ namespace ac_nowcoder_rankings_server {
             Memorize_the_assessment_records_mtx[contestId];
             Memorize_the_assessment_records_mtx_mtx.unlock();
 
+            Memorize_the_assessment_records_json_str_mtx_mtx.lock();
+            Memorize_the_assessment_records_json_str_mtx[contestId];
+            Memorize_the_assessment_records_json_str_mtx_mtx.unlock();
+
             Memorize_the_assessment_records_Supplementary_order_mtx_mtx.lock();
             Memorize_the_assessment_records_Supplementary_order_mtx[contestId];
             Memorize_the_assessment_records_Supplementary_order_mtx_mtx.unlock();
