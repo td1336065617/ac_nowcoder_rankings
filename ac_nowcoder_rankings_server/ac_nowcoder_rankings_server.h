@@ -71,6 +71,8 @@ namespace ac_nowcoder_rankings_server {
         mutex Contest_Info_map_mtx;  // 比赛信息映射锁，保护比赛元数据
         map<long long int, mutex> nowcoder_contest_set_mtx;  // 按比赛ID分组的排序集合锁
         mutex nowcoder_contest_set_mtx_mtx;  // 排序集合锁的互斥锁
+        mutex nowcoder_contest_vector_mtx_mtx;
+        map<long long int, mutex> nowcoder_contest_vector_mtx;  // 按比赛ID分组的排序集合锁
         mutex Unrecorded_Assessment_Status_Map_mtx;  // 状态过滤映射锁
         mutex Memorize_the_assessment_records_Supplementary_order_mtx_mtx;  // 补充订单主锁的互斥锁
         map<long long int, mutex> Memorize_the_assessment_records_Supplementary_order_mtx;  // 按比赛ID细分的补充订单锁
@@ -114,7 +116,7 @@ namespace ac_nowcoder_rankings_server {
         map<long long int, long long int> Memorize_the_assessment_records_max_submissionId;  // 各比赛最大提交ID跟踪
         map<long long int, map<long long int, ac_nowcoder_Ranking_data> > nowcoder_contest_map;  // 用户排名数据存储
         map<long long int, set<ac_nowcoder_Ranking_data> > nowcoder_contest_set;  // 排序后的排名集合
-
+        map<long long int, vector<ac_nowcoder_Ranking_data> > nowcoder_contest_vector;  // 排序后的排名数组
         map<long long int, long long int> nowcoder_contest_list_max_submissionId;  // 榜单最大提交ID
         queue<Listen_to_the_competition_Template> Listen_to_the_competition_queue;  // 待监听比赛队列
         map<long long int, long long int> Stop_monitoring_the_competition;  // 待停止监听比赛列表
