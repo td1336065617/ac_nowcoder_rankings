@@ -114,6 +114,14 @@ namespace ac_nowcoder_rankings_server {
             Time_of_sealing_Submit_Map_mtx_mtx.lock();
             Time_of_sealing_Submit_Map_mtx[contestId];
             Time_of_sealing_Submit_Map_mtx_mtx.unlock();
+
+            nowcoder_contest_vector_mtx_mtx.lock();
+            nowcoder_contest_vector_mtx[contestId];
+            nowcoder_contest_vector_mtx_mtx.unlock();
+
+            nowcoder_contest_set_mtx_mtx.lock();
+            nowcoder_contest_set_mtx[contestId];
+            nowcoder_contest_set_mtx_mtx.unlock();
         } catch (const std::exception &e) {
             // 处理标准异常
             std::cerr << "Exception caught: " << e.what() << std::endl;

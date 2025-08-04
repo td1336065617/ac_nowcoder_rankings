@@ -99,17 +99,32 @@ namespace ac_nowcoder_rankings_server {
             Memorize_the_assessment_records_Supplementary_order[contestId].erase(x);
         }
         //解封榜单，处理封存记录
-        if (contest_info_template.sealing_Status_code&&Memorize_the_assessment_records_Supplementary_order[contestId].size() == 0 && Time_of_sealing_Submit_Map[
+        if (contest_info_template.sealing_Status_code && Memorize_the_assessment_records_Supplementary_order[contestId].
+            size() == 0 && Time_of_sealing_Submit_Map[
                 contestId].size() > 0 && contest_info_template.Time_of_release <= time(nullptr) * 1000) {
             for (auto &x: Time_of_sealing_Submit_Map[contestId]) {
                 if (Memorize_the_assessment_records[contestId][x.first].get_submit_time() >= contest_info_template.
-                    contestEndTime) continue;
+                    contestEndTime)
+                    continue;
 
                 update_ac_nowcoder_ranking_data(contestId, contest_info_template,
                                                 Memorize_the_assessment_records[contestId][x.first], 2);
             }
             Time_of_sealing_Submit_Map[contestId].clear();
         }
+        nowcoder_contest_vector_mtx[contestId].lock();
+        int pm = 0,i=1;
+        ac_nowcoder_Ranking_data ac_nowcoder_Ranking_data1;
+        for (auto &item: nowcoder_contest_set[contestId]) {
+            if (!(item.acceptedCount == ac_nowcoder_Ranking_data1.acceptedCount && item.penalty_Time ==
+                ac_nowcoder_Ranking_data1.penalty_Time)) {
+                pm++;
+            }
+            item.ranking = pm;
+            nowcoder_contest_vector[contestId].push_back(item);
+        }
+        nowcoder_contest_vector_mtx[contestId].unlock();
+
         // 解锁互斥锁
         nowcoder_contest_set_mtx[contestId].unlock();
         nowcoder_contest_map_mtx[contestId].unlock();

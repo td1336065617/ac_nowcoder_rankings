@@ -28,15 +28,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="1.2.3//更新HTTP库，完善返回数据的数据更新模式">
+    <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="1.2.4//删除不成熟设计">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Get_Evaluation_Data.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Get_Evaluation_Data.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_update.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_Memorize_the_assessment_records_json_str.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_Memorize_the_assessment_records_json_str.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Update_Memorize_the_assessment_records_str.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Update_Memorize_the_assessment_records_str.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -305,7 +301,8 @@
       <workItem from="1753335987827" duration="5062000" />
       <workItem from="1754313210943" duration="60000" />
       <workItem from="1754284530350" duration="309000" />
-      <workItem from="1754284850724" duration="737000" />
+      <workItem from="1754284850724" duration="3752000" />
+      <workItem from="1754292192991" duration="1360000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -451,7 +448,23 @@
       <option name="project" value="LOCAL" />
       <updated>1753352002557</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="1.2.4//删除不成熟设计">
+      <option name="closed" value="true" />
+      <created>1754285619272</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1754285619272</updated>
+    </task>
+    <task id="LOCAL-00020" summary="1.2.4//删除不成熟设计">
+      <option name="closed" value="true" />
+      <created>1754285636779</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1754285636779</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,6 +526,7 @@
     <MESSAGE value="1.2.1" />
     <MESSAGE value="1.2.2 // 编写后端接口" />
     <MESSAGE value="1.2.3//更新HTTP库，完善返回数据的数据更新模式" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.2.3//更新HTTP库，完善返回数据的数据更新模式" />
+    <MESSAGE value="1.2.4//删除不成熟设计" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.2.4//删除不成熟设计" />
   </component>
 </project>
