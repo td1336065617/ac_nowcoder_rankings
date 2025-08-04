@@ -11,10 +11,8 @@
 namespace ac_nowcoder_rankings_server {
     // 获取指定比赛的详细信息
     string ac_nowcoder_rankings_server::get_nowcoder_contest_info(long long int contestId) {
-            string ac_nowcoder_contest_info_str; // 存储最终返回的JSON字符串
-        Memorize_the_assessment_records_json_str_mtx[contestId].lock();
-        ac_nowcoder_contest_info_str=Memorize_the_assessment_records_json_str[contestId];
-        Memorize_the_assessment_records_json_str_mtx[contestId].unlock();
+        string ac_nowcoder_contest_info_str; // 存储最终返回的JSON字符串
+
         return ac_nowcoder_contest_info_str;
     }
 }

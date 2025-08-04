@@ -107,17 +107,9 @@ namespace ac_nowcoder_rankings_server {
             Memorize_the_assessment_records_mtx[contestId];
             Memorize_the_assessment_records_mtx_mtx.unlock();
 
-            Memorize_the_assessment_records_json_str_mtx_mtx.lock();
-            Memorize_the_assessment_records_json_str_mtx[contestId];
-            Memorize_the_assessment_records_json_str_mtx_mtx.unlock();
-
             Memorize_the_assessment_records_Supplementary_order_mtx_mtx.lock();
             Memorize_the_assessment_records_Supplementary_order_mtx[contestId];
             Memorize_the_assessment_records_Supplementary_order_mtx_mtx.unlock();
-
-            nowcoder_contest_set_json_str_mtx_mtx.lock();
-            nowcoder_contest_set_json_str_mtx[contestId];
-            nowcoder_contest_set_json_str_mtx_mtx.unlock();
 
             Time_of_sealing_Submit_Map_mtx_mtx.lock();
             Time_of_sealing_Submit_Map_mtx[contestId];

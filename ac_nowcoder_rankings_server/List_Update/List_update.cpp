@@ -60,7 +60,6 @@ namespace ac_nowcoder_rankings_server {
 
                 // 更新竞赛列表
                 nowcoder_contest_list_update(listen_to_the_competition1.contest_id);
-                update_nowcoder_contest_set_json_str(listen_to_the_competition1.contest_id);
                 // 线程安全操作：将竞赛重新加入队列尾部
                 Listen_to_the_competition_queue_mtx.lock();
                 Listen_to_the_competition_queue.push(listen_to_the_competition1);

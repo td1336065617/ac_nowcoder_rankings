@@ -5,7 +5,7 @@
 #include "nlohmann/json.hpp"
 
 namespace ac_nowcoder_rankings_server {
-    int ac_nowcoder_rankings_server::Update_Memorize_the_assessment_records_str(long long int contestId) {
+    /*int ac_nowcoder_rankings_server::Update_Memorize_the_assessment_records_str(long long int contestId) {
         string mtarstr;
         try {
             string ac_nowcoder_contest_info_str; // 存储最终返回的JSON字符串
@@ -65,5 +65,5 @@ namespace ac_nowcoder_rankings_server {
         } catch (const std::exception &e) {
             return -1; // 出现异常返回-1
         }
-    }
+    }*/
 }

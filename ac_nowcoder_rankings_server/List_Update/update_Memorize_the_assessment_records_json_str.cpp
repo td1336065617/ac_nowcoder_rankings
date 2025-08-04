@@ -15,6 +15,7 @@ namespace ac_nowcoder_rankings_server {
      * @param contestId 竞赛ID
      * @return int 返回1表示更新成功
      */
+    /***
     int ac_nowcoder_rankings_server::update_nowcoder_contest_set_json_str(long long int contestId) {
         string ac_nowcoder_rankings_server_str;
         nlohmann::json ac_nowcoder_rankings_server_json;
@@ -83,5 +84,5 @@ namespace ac_nowcoder_rankings_server {
         nowcoder_contest_set_json_str_mtx[contestId].unlock();
         return 1;
     }
-
+    ***/
 }

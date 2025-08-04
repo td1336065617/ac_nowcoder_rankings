@@ -60,10 +60,8 @@ namespace ac_nowcoder_rankings_server {
 
     private:
         // 线程同步机制
-        mutex Memorize_the_assessment_records_mtx_mtx,nowcoder_contest_set_json_str_mtx_mtx,Memorize_the_assessment_records_json_str_mtx_mtx;  // 评估记录主锁的互斥锁，保护评估记录锁的创建/访问
+        mutex Memorize_the_assessment_records_mtx_mtx;  // 评估记录主锁的互斥锁，保护评估记录锁的创建/访问
         map<long long int, mutex> Memorize_the_assessment_records_mtx;  // 按比赛ID细分的评估记录锁，粒度更细的并发控制
-        map<long long int, mutex>  Memorize_the_assessment_records_json_str_mtx;
-        map<long long int, mutex>  nowcoder_contest_set_json_str_mtx;
         mutex ac_nowcoder_Ranking_data_cmp_mtx;  // 排名数据比较操作锁，保证排名比较的原子性
         mutex nowcoder_contest_list_mtx;  // 比赛列表全局锁，保护比赛列表的读写
         mutex nowcoder_contest_list_max_submissionId_mtx;  // 最大提交ID锁，保证提交ID更新的原子性
@@ -96,7 +94,6 @@ namespace ac_nowcoder_rankings_server {
          * @return 操作状态码，成功为0，失败为非0
          */
         int Get_Evaluation_Data(long long int contestId, string cookie);
-        int Update_Memorize_the_assessment_records_str(long long int contest_id);
         /**
          * @brief 分页获取评估数据
          * @param contestId 比赛ID
@@ -112,13 +109,12 @@ namespace ac_nowcoder_rankings_server {
         map<long long int, Contest_Info_Template> Contest_Info_map;  // 比赛元数据存储
         map<long long int, map<long long int, Evaluation_Data_Template, Evaluation_Data_cmp> >
             Memorize_the_assessment_records;  // 评估记录缓存，按比赛ID和提交ID组织
-        map<long long int,string> Memorize_the_assessment_records_json_str;//评估记录缓存，按比赛ID和提交ID组织
         map<long long int, map<long long int, int, Evaluation_Data_cmp> >
             Memorize_the_assessment_records_Supplementary_order;  // 待处理评估记录
         map<long long int, long long int> Memorize_the_assessment_records_max_submissionId;  // 各比赛最大提交ID跟踪
         map<long long int, map<long long int, ac_nowcoder_Ranking_data> > nowcoder_contest_map;  // 用户排名数据存储
         map<long long int, set<ac_nowcoder_Ranking_data> > nowcoder_contest_set;  // 排序后的排名集合
-        map<long long int, string>nowcoder_contest_set_json_str;
+
         map<long long int, long long int> nowcoder_contest_list_max_submissionId;  // 榜单最大提交ID
         queue<Listen_to_the_competition_Template> Listen_to_the_competition_queue;  // 待监听比赛队列
         map<long long int, long long int> Stop_monitoring_the_competition;  // 待停止监听比赛列表
@@ -165,8 +161,6 @@ namespace ac_nowcoder_rankings_server {
          */
         int update_ac_nowcoder_ranking_data(long long int contestId,Contest_Info_Template contest_info_template,
                                           Evaluation_Data_Template evaluation_data_template,bool Supplementary_order);
-        int update_nowcoder_contest_set_json_str(long long int contestId);
-
         Thread_Pool::Thread_Pool ac_nowcoder_rankings_server_thread_pool;  // 任务执行池
         int Shutdown_bj = 0;  // 服务器状态标志
 
