@@ -29,6 +29,7 @@ add_executable(ac_nowcoder_rankings main.cpp
         ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp
         ac_nowcoder_rankings_server/Update_Memorize_the_assessment_records_str.cpp
         ac_nowcoder_rankings_server/List_Update/update_Memorize_the_assessment_records_json_str.cpp
+        ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list_info.cpp
 )
 target_include_directories(ac_nowcoder_rankings PRIVATE include)
 target_link_directories(ac_nowcoder_rankings PRIVATE lib)

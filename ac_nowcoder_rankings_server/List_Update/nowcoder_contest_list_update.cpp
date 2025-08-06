@@ -115,6 +115,7 @@ namespace ac_nowcoder_rankings_server {
         nowcoder_contest_vector_mtx[contestId].lock();
         int pm = 0,i=1;
         ac_nowcoder_Ranking_data ac_nowcoder_Ranking_data1;
+        nowcoder_contest_vector[contestId].clear();
         for (auto &item: nowcoder_contest_set[contestId]) {
             if (!(item.acceptedCount == ac_nowcoder_Ranking_data1.acceptedCount && item.penalty_Time ==
                 ac_nowcoder_Ranking_data1.penalty_Time)) {

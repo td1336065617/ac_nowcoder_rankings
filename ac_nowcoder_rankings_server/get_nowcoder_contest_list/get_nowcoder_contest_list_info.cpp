@@ -1,5 +1,5 @@
 //
-// Created by fsptd on 25-5-20.
+// Created by fsptd on 25-8-4.
 //
 #include <string>
 #include <map>
@@ -82,78 +82,61 @@ namespace ac_nowcoder_rankings_server {
  *
  */
 namespace ac_nowcoder_rankings_server {
-    string ac_nowcoder_rankings_server::get_nowcoder_contest_list(long long int contestId, int idx_begin, int size) {
-        string ac_nowcoder_rankings_server_str;
-        nlohmann::json ac_nowcoder_rankings_server_json;
+    /**
+     * @brief 获取指定比赛ID的牛客网比赛列表信息
+     *
+     * 该函数根据传入的比赛ID，从Contest_Info_map中获取对应的比赛信息，
+     * 并将其序列化为JSON字符串返回。
+     *
+     * @param contestId 比赛ID
+     * @return string 序列化后的比赛信息JSON字符串
+     */
+    string ac_nowcoder_rankings_server::get_nowcoder_contest_list_info(long long int contestId) {
+        string ac_nowcoder_rankings_server_str; // 存储最终生成的JSON字符串
+        nlohmann::json ac_nowcoder_rankings_server_json; // 用于构建JSON数据的临时对象
+        ac_nowcoder_rankings_server_json["contestId"] = contestId; // 将比赛ID添加到JSON中
 
         try {
-            ac_nowcoder_rankings_server_json["contestId"] = contestId;
+            Contest_Info_map_mtx.lock(); // 加锁以保护共享资源Contest_Info_map
+            // 检查比赛ID是否存在
+            if (Contest_Info_map.find(contestId) == Contest_Info_map.end()) {
+                Contest_Info_map_mtx.unlock(); // 解锁
+                throw std::invalid_argument("Contest ID not found");
+            }
+            Contest_Info_Template contest_info_template = Contest_Info_map[contestId]; // 获取指定比赛ID的比赛信息
 
-            // 检查contestId是否有效
-            if (nowcoder_contest_set.find(contestId) == nowcoder_contest_set.end()) {
-                ac_nowcoder_rankings_server_json["error"] = "Invalid contestId";
-                return ac_nowcoder_rankings_server_json.dump();
+            // 将比赛信息的各项属性添加到JSON对象中
+            ac_nowcoder_rankings_server_json["contestname"] = contest_info_template.contestname;
+            ac_nowcoder_rankings_server_json["contestId"] = contest_info_template.contestId;
+            ac_nowcoder_rankings_server_json["Title_number"] = contest_info_template.Title_number;
+            ac_nowcoder_rankings_server_json["contestEndTime"] = contest_info_template.contestEndTime;
+            ac_nowcoder_rankings_server_json["contestBeginTime"] = contest_info_template.contestBeginTime;
+            ac_nowcoder_rankings_server_json["sealing_Status_code"] = contest_info_template.sealing_Status_code;
+            ac_nowcoder_rankings_server_json["Time_of_sealing"] = contest_info_template.Time_of_sealing;
+            ac_nowcoder_rankings_server_json["Time_of_release"] = contest_info_template.Time_of_release;
+            ac_nowcoder_rankings_server_json["rankType"] = contest_info_template.rankType;
+
+            // 遍历题目数据映射表，将每个题目的信息添加到JSON对象中
+            for (const auto &item: contest_info_template.problemData_map) {
+                ac_nowcoder_rankings_server_json["problemData_map"][item.first]["name"] = item.second.name;
+                ac_nowcoder_rankings_server_json["problemData_map"][item.first]["status"] = item.second.status;
+                ac_nowcoder_rankings_server_json["problemData_map"][item.first]["acceptedCount"] = item.second.acceptedCount;
+                ac_nowcoder_rankings_server_json["problemData_map"][item.first]["submitCount"] = item.second.submitCount;
             }
 
-            nowcoder_contest_set_mtx[contestId].lock();
-            nowcoder_contest_vector_mtx[contestId].lock();
-
-            int data_size = 0;
-            int maxsize = nowcoder_contest_vector[contestId].size();
-
-            // 检查索引范围
-            if (idx_begin < 1) idx_begin = 1;
-            if (size <= 0) size = 10; // 默认大小
-
-            for (int i = idx_begin; i <= maxsize && i < idx_begin + size; i++) {
-                data_size++;
-                ac_nowcoder_Ranking_data &item = nowcoder_contest_vector[contestId][i - 1];
-                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["userid"] = item.userid;
-                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["username"] = item.username;
-                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["ranking"] = item.ranking;
-                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["acceptedCount"] = item.acceptedCount;
-                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["penalty_Time"] = item.penalty_Time;
-                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["ac_Finally_time"] = item.ac_Finally_time;
-
-                for (auto &item1: item.Title_status_map) {
-                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
-                        "Title_status_map"][item1.second.Title_Name]["Title_Name"] = item1.second.Title_Name;
-                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
-                        "Title_status_map"][item1.second.Title_Name]["status"] = item1.second.status;
-                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
-                        "Title_status_map"][item1.second.Title_Name]["AC_time"] = item1.second.AC_time;
-                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
-                        "Title_status_map"][item1.second.Title_Name]["first_Blood"] = item1.second.first_Blood;
-                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
-                        "Title_status_map"][item1.second.Title_Name]["Number_of_errors"] = item1.second.Number_of_errors;
-                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
-                        "Title_status_map"][item1.second.Title_Name]["Submission_status"] = item1.second.Submission_status;
-                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
-                        "Title_status_map"][item1.second.Title_Name]["Submitted_not_completed_num"] = item1.second.Submitted_not_completed_num;
-                }
-            }
-
-            ac_nowcoder_rankings_server_json["data_size"] = data_size;
-            ac_nowcoder_rankings_server_json["maxsize"] = maxsize;
-            ac_nowcoder_rankings_server_json["success"] = true;
-
+            ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump(); // 将JSON对象序列化为字符串
         } catch (const std::exception& e) {
-            ac_nowcoder_rankings_server_json["error"] = "Exception occurred: " + std::string(e.what());
-            ac_nowcoder_rankings_server_json["success"] = false;
+            // 处理异常并返回错误信息
+            ac_nowcoder_rankings_server_json["error"] = e.what();
+            ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump();
         } catch (...) {
-            ac_nowcoder_rankings_server_json["error"] = "Unknown exception occurred";
-            ac_nowcoder_rankings_server_json["success"] = false;
+            // 处理未知异常
+            ac_nowcoder_rankings_server_json["error"] = "Unknown error occurred";
+            ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump();
         }
 
-        // 确保锁被释放
-        try {
-            nowcoder_contest_vector_mtx[contestId].unlock();
-            nowcoder_contest_set_mtx[contestId].unlock();
-        } catch (...) {
-            // 忽略解锁异常
-        }
+        Contest_Info_map_mtx.unlock(); // 解锁
 
-        ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump();
-        return ac_nowcoder_rankings_server_str;
+        return ac_nowcoder_rankings_server_str; // 返回序列化后的比赛信息或错误信息
     }
 }
