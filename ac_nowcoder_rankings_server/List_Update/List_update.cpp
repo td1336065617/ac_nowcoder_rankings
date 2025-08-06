@@ -12,58 +12,88 @@ namespace ac_nowcoder_rankings_server {
     // 5. 更新竞赛相关列表信息
     // 6. 将竞赛重新放入队列尾部，以便循环处理
     void ac_nowcoder_rankings_server::List_update() {
-        // 如果竞赛队列不为空则进行处理
-        if (Listen_to_the_competition_queue.size()) {
-            Listen_to_the_competition_Template listen_to_the_competition1;
-
-            // 线程安全操作：获取队列中的竞赛
-            Listen_to_the_competition_queue_mtx.lock();
+        try {
+            // 如果竞赛队列不为空则进行处理
             if (Listen_to_the_competition_queue.size()) {
-                // 获取队列首元素
-                listen_to_the_competition1 = Listen_to_the_competition_queue.front();
-                // 弹出队列首元素
-                Listen_to_the_competition_queue.pop();
-            }
-            Listen_to_the_competition_queue_mtx.unlock();
+                Listen_to_the_competition_Template listen_to_the_competition1;
 
-            // 检查是否在停止监控列表中
-            Stop_monitoring_the_competition_mtx.lock();
-            if (Stop_monitoring_the_competition.find(listen_to_the_competition1.contest_id) !=
-                Stop_monitoring_the_competition.end()) {
-                // 如果竞赛在停止监控列表中，则移除并解锁
-                Stop_monitoring_the_competition.erase(listen_to_the_competition1.contest_id);
-                Stop_monitoring_the_competition_mtx.unlock();
-            } else {
-                Stop_monitoring_the_competition_mtx.unlock();
-
-                // 获取竞赛信息
-                long long int contestId = listen_to_the_competition1.contest_id;
-                Contest_Info_map_mtx.lock();
-                Contest_Info_Template contest_info_template = Contest_Info_map[contestId];
-                Contest_Info_map_mtx.unlock();
-
-                // 检查竞赛是否满足停止监控条件：
-                // 1. 竞赛结束时间超过1分钟
-                // 2. 没有提交记录
-                // 3. 没有补充评估记录
-                if (contest_info_template.contestEndTime+60*1000 <= time(nullptr)*1000 &&
-                    Time_of_sealing_Submit_Map[contestId].size() == 0 &&
-                    Memorize_the_assessment_records_Supplementary_order[contestId].size() == 0) {
-                    Stop_monitoring_the_competition[contestId]=1;
-                }
-
-                // 如果竞赛未结束或有补充评估记录，则获取评估数据
-                if (contest_info_template.contestEndTime > time(nullptr)*1000 ||
-                    Memorize_the_assessment_records_Supplementary_order[contestId].size()) {
-                    Get_Evaluation_Data(listen_to_the_competition1.contest_id, listen_to_the_competition1.cookie);
-                }
-
-                // 更新竞赛列表
-                nowcoder_contest_list_update(listen_to_the_competition1.contest_id);
-                // 线程安全操作：将竞赛重新加入队列尾部
+                // 线程安全操作：获取队列中的竞赛
                 Listen_to_the_competition_queue_mtx.lock();
-                Listen_to_the_competition_queue.push(listen_to_the_competition1);
+                if (Listen_to_the_competition_queue.size()) {
+                    // 获取队列首元素
+                    listen_to_the_competition1 = Listen_to_the_competition_queue.front();
+                    // 弹出队列首元素
+                    Listen_to_the_competition_queue.pop();
+                }
                 Listen_to_the_competition_queue_mtx.unlock();
+
+                // 检查是否在停止监控列表中
+                Stop_monitoring_the_competition_mtx.lock();
+                if (Stop_monitoring_the_competition.find(listen_to_the_competition1.contest_id) !=
+                    Stop_monitoring_the_competition.end()) {
+                    // 如果竞赛在停止监控列表中，则移除并解锁
+                    Stop_monitoring_the_competition.erase(listen_to_the_competition1.contest_id);
+                    Stop_monitoring_the_competition_mtx.unlock();
+                } else {
+                    Stop_monitoring_the_competition_mtx.unlock();
+
+                    // 获取竞赛信息
+                    long long int contestId = listen_to_the_competition1.contest_id;
+                    Contest_Info_map_mtx.lock();
+                    Contest_Info_Template contest_info_template = Contest_Info_map[contestId];
+                    Contest_Info_map_mtx.unlock();
+
+                    // 检查竞赛是否满足停止监控条件：
+                    // 1. 竞赛结束时间超过1分钟
+                    // 2. 没有提交记录
+                    // 3. 没有补充评估记录
+                    if (contest_info_template.contestEndTime+60*1000 <= time(nullptr)*1000 &&
+                        Time_of_sealing_Submit_Map[contestId].size() == 0 &&
+                        Memorize_the_assessment_records_Supplementary_order[contestId].size() == 0) {
+                        Stop_monitoring_the_competition[contestId]=1;
+                    }
+
+                    // 如果竞赛未结束或有补充评估记录，则获取评估数据
+                    if (contest_info_template.contestEndTime > time(nullptr)*1000 ||
+                        Memorize_the_assessment_records_Supplementary_order[contestId].size()) {
+                        Get_Evaluation_Data(listen_to_the_competition1.contest_id, listen_to_the_competition1.cookie);
+                    }
+
+                    // 更新竞赛列表
+                    nowcoder_contest_list_update(listen_to_the_competition1.contest_id);
+                    // 线程安全操作：将竞赛重新加入队列尾部
+                    Listen_to_the_competition_queue_mtx.lock();
+                    Listen_to_the_competition_queue.push(listen_to_the_competition1);
+                    Listen_to_the_competition_queue_mtx.unlock();
+                }
+            }
+        } catch (const std::exception& e) {
+            // 记录异常日志
+            // 可以添加具体的日志记录代码
+            // 例如：LOG_ERROR("List_update exception: %s", e.what());
+
+            // 确保所有互斥锁都被释放
+            if (Listen_to_the_competition_queue_mtx.try_lock()) {
+                Listen_to_the_competition_queue_mtx.unlock();
+            }
+            if (Stop_monitoring_the_competition_mtx.try_lock()) {
+                Stop_monitoring_the_competition_mtx.unlock();
+            }
+            if (Contest_Info_map_mtx.try_lock()) {
+                Contest_Info_map_mtx.unlock();
+            }
+        } catch (...) {
+            // 处理非标准异常
+
+            // 确保所有互斥锁都被释放
+            if (Listen_to_the_competition_queue_mtx.try_lock()) {
+                Listen_to_the_competition_queue_mtx.unlock();
+            }
+            if (Stop_monitoring_the_competition_mtx.try_lock()) {
+                Stop_monitoring_the_competition_mtx.unlock();
+            }
+            if (Contest_Info_map_mtx.try_lock()) {
+                Contest_Info_map_mtx.unlock();
             }
         }
     }

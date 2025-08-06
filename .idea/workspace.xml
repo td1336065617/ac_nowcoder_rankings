@@ -30,11 +30,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="1.2.4//删除不成熟设计">
-      <change afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_user_info/get_nowcoder_user_info.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Task_distribution_center.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Task_distribution_center.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Get_Evaluation_Data.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Get_Evaluation_Data.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_Update_Distribution_Center.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_Update_Distribution_Center.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/List_update.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_Memorize_the_assessment_records_json_str.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/Update_Memorize_the_assessment_records_str.cpp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +179,7 @@
       <workItem from="1754284850724" duration="3752000" />
       <workItem from="1754292192991" duration="1360000" />
       <workItem from="1754294761790" duration="4756000" />
-      <workItem from="1754466376817" duration="3940000" />
+      <workItem from="1754466376817" duration="10127000" />
     </task>
     <task id="LOCAL-00001" summary="更新">
       <option name="closed" value="true" />
@@ -353,7 +357,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754466772616</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="1.2.4//删除不成熟设计">
+      <option name="closed" value="true" />
+      <created>1754480829921</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1754480829921</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -18,20 +18,30 @@ namespace ac_nowcoder_rankings_server {
     void ac_nowcoder_rankings_server::List_Update_Distribution_Center() {
         // 主循环：持续运行直到接收到关闭信号
         while (!Shutdown_bj) {
-            // 获取当前待处理的竞赛数量
-            int size = Listen_to_the_competition_queue.size();
+            try {
+                // 获取当前待处理的竞赛数量
+                int size = Listen_to_the_competition_queue.size();
 
-            // 处理队列中的每个竞赛
-            while (size) {
-                size--;
+                // 处理队列中的每个竞赛
+                while (size) {
+                    size--;
 
-                // 创建列表更新任务：调用List_update()方法
-                Thread_Pool::Task task1([this]() {
-                    this->List_update();
-                });
+                    // 创建列表更新任务：调用List_update()方法
+                    Thread_Pool::Task task1([this]() {
+                        try {
+                            this->List_update();
+                        } catch (const std::exception& e) {
+                            // 捕获并处理List_update中可能抛出的异常
+                            // 可以记录日志或进行其他错误处理
+                        }
+                    });
 
-                // 将任务提交到线程池进行处理
-                ac_nowcoder_rankings_server_thread_pool.addtanks(task1);
+                    // 将任务提交到线程池进行处理
+                    ac_nowcoder_rankings_server_thread_pool.addtanks(task1);
+                }
+            } catch (const std::exception& e) {
+                // 捕获并处理队列操作中可能抛出的异常
+                // 可以记录日志或进行其他错误处理
             }
 
             // 处理间隔：避免CPU过度占用

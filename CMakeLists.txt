@@ -27,8 +27,6 @@ add_executable(ac_nowcoder_rankings main.cpp
         include/HTTP_Server_Framework/HTTP_Server_Framework.h
         ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp
         ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp
-        ac_nowcoder_rankings_server/Update_Memorize_the_assessment_records_str.cpp
-        ac_nowcoder_rankings_server/List_Update/update_Memorize_the_assessment_records_json_str.cpp
         ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list_info.cpp
         ac_nowcoder_rankings_server/get_nowcoder_user_info/get_nowcoder_user_info.cpp
 )
