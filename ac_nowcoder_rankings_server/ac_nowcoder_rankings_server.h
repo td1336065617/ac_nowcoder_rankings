@@ -114,7 +114,7 @@ namespace ac_nowcoder_rankings_server {
         map<long long int, map<long long int, int, Evaluation_Data_cmp> >
             Memorize_the_assessment_records_Supplementary_order;  // 待处理评估记录
         map<long long int, long long int> Memorize_the_assessment_records_max_submissionId;  // 各比赛最大提交ID跟踪
-        map<long long int, map<long long int, ac_nowcoder_Ranking_data> > nowcoder_contest_map;  // 用户排名数据存储
+        map<long long int, map<long long int, ac_nowcoder_Ranking_data>> nowcoder_contest_map;  // 用户排名数据存储
         map<long long int, set<ac_nowcoder_Ranking_data> > nowcoder_contest_set;  // 排序后的排名集合
         map<long long int, vector<ac_nowcoder_Ranking_data> > nowcoder_contest_vector;  // 排序后的排名数组
         map<long long int, long long int> nowcoder_contest_list_max_submissionId;  // 榜单最大提交ID
@@ -174,7 +174,7 @@ namespace ac_nowcoder_rankings_server {
         string get_nowcoder_contest_list(long long int contestId,int idx_begin,int size);
         string get_nowcoder_contest_info(long long int contestId);
         string get_nowcoder_contest_list_info(long long int contestId);
-
+        string get_nowcoder_user_info(long long int contestId);
         /**
          * @brief 添加新比赛
          * @param contestId 比赛ID

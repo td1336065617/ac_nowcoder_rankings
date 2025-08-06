@@ -1,0 +1,399 @@
+Index: ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//\n// Created by fsptd on 25-5-20.\n//\n#include <string>\n#include <map>\n#include \"../Evaluation Data Template/Evaluation_Data_Template.h\"\n#include \"../ac_nowcoder_rankings_server.h\"\n#include \"../tools_class/time_class.h\"\n#include\"nlohmann/json.hpp\"\n/*\n*namespace ac_nowcoder_rankings_server {\n    // 比赛信息模板类\n    struct problemData {\n        std::string name; // 题目名称\n        int status; // 题目状态\n        int acceptedCount; // 通过次数\n        int submitCount; // 提交次数\n    };\n    class Contest_Info_Template {\n    public:\n        std::string contestname; // 比赛名称\n        long long int contestId; // 比赛ID\n        int Title_number; // 题目数量\n        long long int contestEndTime; // 比赛结束时间\n        long long int contestBeginTime; // 比赛开始时间\n        int sealing_Status_code;//本次比赛是否存在封榜\n        long long int Time_of_sealing;//封榜时间\n        long long int Time_of_release;//解榜时间\n        std::string rankType; // 排名类型\n        std::map<std::string , problemData>problemData_map; // 题目数据映射表，键为题目ID，值为题目数据\n    };\n} // ac_nowcoder_rankings_server\n\nnamespace ac_nowcoder_rankings_server {\n    // 题目状态结构体，用于记录题目的相关状态信息\n    struct Title_status {\n        std::string Title_Name;\n        int Submission_status=0;  // 提交状态：0表示未提交，1表示已提交\n        int Number_of_errors=0;   // 错误提交次数：记录用户提交该题目时的错误次数\n        int status=0;             // 题目状态：0表示未完成，1表示已完成\n        long long int AC_time=0;  // 完成时间：记录用户完成该题目的时间，单位为毫秒\n        bool first_Blood=false;       // 是否为首杀：true表示用户是第一个完成该题目的人，false表示不是\n        int Submitted_not_completed_num;//已经提交但未完成测评的测评条数。\n        std::map<long long int,Evaluation_Data_Template>Submission_record;\n\n    };\n\n    // 用户排名数据类，用于存储用户在排行榜中的相关信息\n    class ac_nowcoder_Ranking_data {\n    public:\n        long long int  userid=-1;            // 用户ID：唯一标识用户\n        std::string username=\"\";          // 用户名：用户的昵称\n        long long int  ranking=-1;           // 当前排名：用户在排行榜中的位置\n        long long int  acceptedCount=0;     // 已通过题目数量：用户已完成的题目数量\n        long long int penalty_Time=0;      // 罚时：用户的总罚时，单位为毫秒\n        long long int ac_Finally_time=0;   // 最后通过时间：用户最后通过题目的时间，单位为毫秒\n        std::map<std::string,Title_status>Title_status_map; // 题目状态映射表：记录用户每个题目的状态信息\n\n        // 重载小于运算符，用于比较两个用户的排名\n        bool operator < (const ac_nowcoder_Ranking_data& p1) const {\n            // 优先比较通过题目数量，通过题目数量多的用户排名靠前\n            if (acceptedCount == p1.acceptedCount) {\n                // 如果通过题目数量相同，则比较罚时，罚时少的用户排名靠前\n                if (penalty_Time == p1.penalty_Time) {\n                    // 如果罚时也相同，则比较最后通过时间，时间早的用户排名靠前\n                    if (ac_Finally_time == p1.ac_Finally_time) {\n                        // 如果最后通过时间也相同，则比较用户名，按字典序排列\n                        if (username == p1.username)\n                            return userid < p1.userid;  // 如果用户名相同，则比较用户ID，ID小的用户排名靠前\n                        return username < p1.username;\n                    }\n                    return ac_Finally_time < p1.ac_Finally_time;\n                }\n                return penalty_Time < p1.penalty_Time;\n            }\n            return acceptedCount > p1.acceptedCount;\n        }\n    };\n}\n\n\n *\n */\nnamespace ac_nowcoder_rankings_server {\n    string ac_nowcoder_rankings_server::get_nowcoder_contest_list(long long int contestId) {\n        string ac_nowcoder_rankings_server_str;\n        nlohmann::json ac_nowcoder_rankings_server_json;\n        ac_nowcoder_rankings_server_json[\"contestId\"] = contestId;\n        Contest_Info_map_mtx.lock();\n        Contest_Info_Template contest_info_template = Contest_Info_map[contestId];\n        ac_nowcoder_rankings_server_json[\"contestname\"] = contest_info_template.contestname;\n        ac_nowcoder_rankings_server_json[\"contestId\"] = contest_info_template.contestId;\n        ac_nowcoder_rankings_server_json[\"Title_number\"] = contest_info_template.Title_number;\n        ac_nowcoder_rankings_server_json[\"contestEndTime\"] = contest_info_template.contestEndTime;\n        ac_nowcoder_rankings_server_json[\"contestBeginTime\"] = contest_info_template.contestBeginTime;\n        ac_nowcoder_rankings_server_json[\"sealing_Status_code\"] = contest_info_template.sealing_Status_code;\n        ac_nowcoder_rankings_server_json[\"Time_of_sealing\"] = contest_info_template.Time_of_sealing;\n        ac_nowcoder_rankings_server_json[\"Time_of_release\"] = contest_info_template.Time_of_release;\n        ac_nowcoder_rankings_server_json[\"rankType\"] = contest_info_template.rankType;\n        for (auto &item: contest_info_template.problemData_map) {\n            ac_nowcoder_rankings_server_json[\"problemData_map\"][item.first][\"name\"] = item.second.name;\n            ac_nowcoder_rankings_server_json[\"problemData_map\"][item.first][\"status\"] = item.second.status;\n            ac_nowcoder_rankings_server_json[\"problemData_map\"][item.first][\"acceptedCount\"] = item.second.\n                    acceptedCount;\n            ac_nowcoder_rankings_server_json[\"problemData_map\"][item.first][\"submitCount\"] = item.second.submitCount;\n        }\n\n        nowcoder_contest_set_mtx[contestId].lock();\n        ac_nowcoder_Ranking_data ac_nowcoder_Ranking_data1;\n        int pm = 0;\n        for (auto &item: nowcoder_contest_set[contestId]) {\n            if (item.acceptedCount == ac_nowcoder_Ranking_data1.acceptedCount && item.penalty_Time ==\n                ac_nowcoder_Ranking_data1.penalty_Time) {\n            } else {\n                pm++;\n            }\n            item.ranking = pm;\n            ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"userid\"] = item.userid;\n            ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"username\"] = item.username;\n            ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ranking\"] = item.ranking;\n            ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"acceptedCount\"] = item.\n                    acceptedCount;\n            ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"penalty_Time\"] = item.\n                    penalty_Time;\n            ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ac_Finally_time\"] = item.\n                    ac_Finally_time;\n            for (auto &item1: item.Title_status_map) {\n                ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ac_Finally_time\"][\n                    \"Title_status_map\"][\"Title_Name\"] = item1.second.Title_Name;\n                ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ac_Finally_time\"][\n                    \"Title_status_map\"][\"status\"] = item1.second.status;\n                ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ac_Finally_time\"][\n                    \"Title_status_map\"][\"AC_time\"] = item1.second.AC_time;\n                ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ac_Finally_time\"][\n                    \"Title_status_map\"][\"first_Blood\"] = item1.second.first_Blood;\n                ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ac_Finally_time\"][\n                    \"Title_status_map\"][\"Number_of_errors\"] = item1.second.Number_of_errors;\n                ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ac_Finally_time\"][\n                    \"Title_status_map\"][\"Submission_status\"] = item1.second.Submission_status;\n                ac_nowcoder_rankings_server_json[\"nowcoder_contest_set\"][\"ranking_data\"][pm][\"ac_Finally_time\"][\n                    \"Title_status_map\"][\"Submitted_not_completed_num\"] = item1.second.Submitted_not_completed_num;\n            }\n        }\n        ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump();\n        nowcoder_contest_set_mtx[contestId].unlock();\n        Contest_Info_map_mtx.unlock();\n\n        return ac_nowcoder_rankings_server_str;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp b/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp
+--- a/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp	(revision 3f924156af7cba3d00f17c5025be113784a34797)
++++ b/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp	(date 1754309079982)
+@@ -82,69 +82,78 @@
+  *
+  */
+ namespace ac_nowcoder_rankings_server {
+-    string ac_nowcoder_rankings_server::get_nowcoder_contest_list(long long int contestId) {
++    string ac_nowcoder_rankings_server::get_nowcoder_contest_list(long long int contestId, int idx_begin, int size) {
+         string ac_nowcoder_rankings_server_str;
+         nlohmann::json ac_nowcoder_rankings_server_json;
+-        ac_nowcoder_rankings_server_json["contestId"] = contestId;
+-        Contest_Info_map_mtx.lock();
+-        Contest_Info_Template contest_info_template = Contest_Info_map[contestId];
+-        ac_nowcoder_rankings_server_json["contestname"] = contest_info_template.contestname;
+-        ac_nowcoder_rankings_server_json["contestId"] = contest_info_template.contestId;
+-        ac_nowcoder_rankings_server_json["Title_number"] = contest_info_template.Title_number;
+-        ac_nowcoder_rankings_server_json["contestEndTime"] = contest_info_template.contestEndTime;
+-        ac_nowcoder_rankings_server_json["contestBeginTime"] = contest_info_template.contestBeginTime;
+-        ac_nowcoder_rankings_server_json["sealing_Status_code"] = contest_info_template.sealing_Status_code;
+-        ac_nowcoder_rankings_server_json["Time_of_sealing"] = contest_info_template.Time_of_sealing;
+-        ac_nowcoder_rankings_server_json["Time_of_release"] = contest_info_template.Time_of_release;
+-        ac_nowcoder_rankings_server_json["rankType"] = contest_info_template.rankType;
+-        for (auto &item: contest_info_template.problemData_map) {
+-            ac_nowcoder_rankings_server_json["problemData_map"][item.first]["name"] = item.second.name;
+-            ac_nowcoder_rankings_server_json["problemData_map"][item.first]["status"] = item.second.status;
+-            ac_nowcoder_rankings_server_json["problemData_map"][item.first]["acceptedCount"] = item.second.
+-                    acceptedCount;
+-            ac_nowcoder_rankings_server_json["problemData_map"][item.first]["submitCount"] = item.second.submitCount;
+-        }
++
++        try {
++            ac_nowcoder_rankings_server_json["contestId"] = contestId;
++
++            // 检查contestId是否有效
++            if (nowcoder_contest_set.find(contestId) == nowcoder_contest_set.end()) {
++                ac_nowcoder_rankings_server_json["error"] = "Invalid contestId";
++                return ac_nowcoder_rankings_server_json.dump();
++            }
+ 
+-        nowcoder_contest_set_mtx[contestId].lock();
+-        ac_nowcoder_Ranking_data ac_nowcoder_Ranking_data1;
+-        int pm = 0;
+-        for (auto &item: nowcoder_contest_set[contestId]) {
+-            if (item.acceptedCount == ac_nowcoder_Ranking_data1.acceptedCount && item.penalty_Time ==
+-                ac_nowcoder_Ranking_data1.penalty_Time) {
+-            } else {
+-                pm++;
+-            }
+-            item.ranking = pm;
+-            ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["userid"] = item.userid;
+-            ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["username"] = item.username;
+-            ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ranking"] = item.ranking;
+-            ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["acceptedCount"] = item.
+-                    acceptedCount;
+-            ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["penalty_Time"] = item.
+-                    penalty_Time;
+-            ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ac_Finally_time"] = item.
+-                    ac_Finally_time;
+-            for (auto &item1: item.Title_status_map) {
+-                ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ac_Finally_time"][
+-                    "Title_status_map"]["Title_Name"] = item1.second.Title_Name;
+-                ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ac_Finally_time"][
+-                    "Title_status_map"]["status"] = item1.second.status;
+-                ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ac_Finally_time"][
+-                    "Title_status_map"]["AC_time"] = item1.second.AC_time;
+-                ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ac_Finally_time"][
+-                    "Title_status_map"]["first_Blood"] = item1.second.first_Blood;
+-                ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ac_Finally_time"][
+-                    "Title_status_map"]["Number_of_errors"] = item1.second.Number_of_errors;
+-                ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ac_Finally_time"][
+-                    "Title_status_map"]["Submission_status"] = item1.second.Submission_status;
+-                ac_nowcoder_rankings_server_json["nowcoder_contest_set"]["ranking_data"][pm]["ac_Finally_time"][
+-                    "Title_status_map"]["Submitted_not_completed_num"] = item1.second.Submitted_not_completed_num;
++            nowcoder_contest_set_mtx[contestId].lock();
++            nowcoder_contest_vector_mtx[contestId].lock();
++
++            int data_size = 0;
++            int maxsize = nowcoder_contest_vector[contestId].size();
++
++            // 检查索引范围
++            if (idx_begin < 1) idx_begin = 1;
++            if (size <= 0) size = 10; // 默认大小
++
++            for (int i = idx_begin; i <= maxsize && i < idx_begin + size; i++) {
++                data_size++;
++                ac_nowcoder_Ranking_data &item = nowcoder_contest_vector[contestId][i - 1];
++                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["userid"] = item.userid;
++                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["username"] = item.username;
++                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["ranking"] = item.ranking;
++                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["acceptedCount"] = item.acceptedCount;
++                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["penalty_Time"] = item.penalty_Time;
++                ac_nowcoder_rankings_server_json["ranking_data"][data_size]["ac_Finally_time"] = item.ac_Finally_time;
++
++                for (auto &item1: item.Title_status_map) {
++                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
++                        "Title_status_map"][item1.second.Title_Name]["Title_Name"] = item1.second.Title_Name;
++                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
++                        "Title_status_map"][item1.second.Title_Name]["status"] = item1.second.status;
++                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
++                        "Title_status_map"][item1.second.Title_Name]["AC_time"] = item1.second.AC_time;
++                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
++                        "Title_status_map"][item1.second.Title_Name]["first_Blood"] = item1.second.first_Blood;
++                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
++                        "Title_status_map"][item1.second.Title_Name]["Number_of_errors"] = item1.second.Number_of_errors;
++                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
++                        "Title_status_map"][item1.second.Title_Name]["Submission_status"] = item1.second.Submission_status;
++                    ac_nowcoder_rankings_server_json["ranking_data"][data_size][
++                        "Title_status_map"][item1.second.Title_Name]["Submitted_not_completed_num"] = item1.second.Submitted_not_completed_num;
++                }
+             }
++
++            ac_nowcoder_rankings_server_json["data_size"] = data_size;
++            ac_nowcoder_rankings_server_json["maxsize"] = maxsize;
++            ac_nowcoder_rankings_server_json["success"] = true;
++
++        } catch (const std::exception& e) {
++            ac_nowcoder_rankings_server_json["error"] = "Exception occurred: " + std::string(e.what());
++            ac_nowcoder_rankings_server_json["success"] = false;
++        } catch (...) {
++            ac_nowcoder_rankings_server_json["error"] = "Unknown exception occurred";
++            ac_nowcoder_rankings_server_json["success"] = false;
+         }
+-        ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump();
+-        nowcoder_contest_set_mtx[contestId].unlock();
+-        Contest_Info_map_mtx.unlock();
++
++        // 确保锁被释放
++        try {
++            nowcoder_contest_vector_mtx[contestId].unlock();
++            nowcoder_contest_set_mtx[contestId].unlock();
++        } catch (...) {
++            // 忽略解锁异常
++        }
+ 
++        ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump();
+         return ac_nowcoder_rankings_server_str;
+     }
+ }
+Index: ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//\n// Created by fsptd on 25-5-14.\n//\n#include \"../include/HTTP_Server_Framework/HTTP_Server_Framework.h\"\n#include \"Evaluation Data Template/Evaluation_Data_Template.h\"\n#include \"ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.h\"\n#include \"set\"\n#include \"../include/Thread_Pool/Thread_Pool.h\"\n#include \"Listen_to_the_competition_Template/Listen_to_the_competition_Template.h\"\n#include \"Contest_Info_Template/Contest_Info_Template.h\"\n#include \"../include/HTTP_Server_Framework/Time_data/Time_data.h\"\n#ifndef AC_NOWCODER_RANKINGS_SERVER_H\n#define AC_NOWCODER_RANKINGS_SERVER_H\n\nnamespace ac_nowcoder_rankings_server {\n    using namespace HTTP_Server_Framework;\n\n    /**\n     * @brief 牛客比赛排名服务器类，继承自HTTP服务器框架\n     *\n     * 该类负责处理牛客平台比赛相关的排名逻辑，包括但不限于：\n     * - 比赛数据的获取与解析\n     * - 实时排名更新与维护\n     * - 评估数据处理与缓存\n     * - 线程安全的资源管理\n     * - 榜单生成与分发\n     */\n    class ac_nowcoder_rankings_server : public HTTP_Server_Framework {\n    public:\n        /**\n         * @brief 构造函数\n         *\n         * 执行初始化操作：\n         * 1. 配置不记录的评估状态类型（编译错误和内部错误）\n         * 2. 初始化线程池（最大线程数100，核心线程数5，任务队列容量10）\n         * 3. 启动榜单更新分配中心作为后台任务\n         * 4. 确保线程安全的数据结构初始化\n         */\n        ac_nowcoder_rankings_server() {\n            Unrecorded_Assessment_Status_Map[\"编译错误\"] = 1;\n            Unrecorded_Assessment_Status_Map[\"内部错误\"] = 1;\n            ac_nowcoder_rankings_server_thread_pool.set_Thread_Pool(100, 5, 10);\n            Thread_Pool::Task task1([this]() {\n                this->List_Update_Distribution_Center();\n            });\n            ac_nowcoder_rankings_server_thread_pool.addtanks(task1);\n        }\n\n        /**\n         * @brief 析构函数\n         *\n         * 执行清理操作：\n         * 1. 设置服务器关闭标志\n         * 2. 通知所有工作线程安全退出\n         * 3. 确保资源有序释放\n         */\n        ~ac_nowcoder_rankings_server() {\n            Shutdown_bj = 1;\n        }\n\n    private:\n        // 线程同步机制\n        mutex Memorize_the_assessment_records_mtx_mtx;  // 评估记录主锁的互斥锁，保护评估记录锁的创建/访问\n        map<long long int, mutex> Memorize_the_assessment_records_mtx;  // 按比赛ID细分的评估记录锁，粒度更细的并发控制\n        mutex ac_nowcoder_Ranking_data_cmp_mtx;  // 排名数据比较操作锁，保证排名比较的原子性\n        mutex nowcoder_contest_list_mtx;  // 比赛列表全局锁，保护比赛列表的读写\n        mutex nowcoder_contest_list_max_submissionId_mtx;  // 最大提交ID锁，保证提交ID更新的原子性\n        mutex Memorize_the_assessment_records_max_submissionId_mtx;  // 评估记录最大提交ID锁\n        mutex Listen_to_the_competition_queue_mtx;  // 监听队列锁，保护监听队列的操作\n        mutex Stop_monitoring_the_competition_mtx;  // 停止监听锁，协调监听停止操作\n        mutex Contest_Info_map_mtx;  // 比赛信息映射锁，保护比赛元数据\n        map<long long int, mutex> nowcoder_contest_set_mtx;  // 按比赛ID分组的排序集合锁\n        mutex nowcoder_contest_set_mtx_mtx;  // 排序集合锁的互斥锁\n        mutex nowcoder_contest_vector_mtx_mtx;\n        map<long long int, mutex> nowcoder_contest_vector_mtx;  // 按比赛ID分组的排序集合锁\n        mutex Unrecorded_Assessment_Status_Map_mtx;  // 状态过滤映射锁\n        mutex Memorize_the_assessment_records_Supplementary_order_mtx_mtx;  // 补充订单主锁的互斥锁\n        map<long long int, mutex> Memorize_the_assessment_records_Supplementary_order_mtx;  // 按比赛ID细分的补充订单锁\n        map<long long int, mutex> nowcoder_contest_map_mtx;  // 按比赛ID细分的排名数据锁\n        mutex nowcoder_contest_map_mtx_mtx;  // 排名数据锁的互斥锁\n        map<long long int, mutex> Time_of_sealing_Submit_Map_mtx; // 封榜提交锁\n        mutex Time_of_sealing_Submit_Map_mtx_mtx; // 封榜提交主锁\n\n        /**\n         * @brief 核心请求分发器\n         * @param httpRequestData 包含HTTP请求的所有相关信息\n         * @param httpResponseData 用于填充HTTP响应的数据结构\n         * @return HTTP状态码，表示处理结果\n         */\n        int Task_distribution_center(HTTP_request_data httpRequestData, HTTP_response_data &httpResponseData);\n\n        /**\n         * @brief 获取比赛评估数据\n         * @param contestId 唯一标识比赛的ID\n         * @param cookie 用于认证的用户凭证\n         * @return 操作状态码，成功为0，失败为非0\n         */\n        int Get_Evaluation_Data(long long int contestId, string cookie);\n        /**\n         * @brief 分页获取评估数据\n         * @param contestId 比赛ID\n         * @param cookie 认证cookie\n         * @param page 请求的页码\n         * @param max_pageSize 每页最大记录数\n         * @return 包含评估数据的向量，按时间排序\n         */\n        vector<Evaluation_Data_Template> Get_Evaluation_Data_Single_request(\n            long long int contestId, string cookie, int page, int max_pageSize);\n\n        // 核心数据结构\n        map<long long int, Contest_Info_Template> Contest_Info_map;  // 比赛元数据存储\n        map<long long int, map<long long int, Evaluation_Data_Template, Evaluation_Data_cmp> >\n            Memorize_the_assessment_records;  // 评估记录缓存，按比赛ID和提交ID组织\n        map<long long int, map<long long int, int, Evaluation_Data_cmp> >\n            Memorize_the_assessment_records_Supplementary_order;  // 待处理评估记录\n        map<long long int, long long int> Memorize_the_assessment_records_max_submissionId;  // 各比赛最大提交ID跟踪\n        map<long long int, map<long long int, ac_nowcoder_Ranking_data> > nowcoder_contest_map;  // 用户排名数据存储\n        map<long long int, set<ac_nowcoder_Ranking_data> > nowcoder_contest_set;  // 排序后的排名集合\n        map<long long int, vector<ac_nowcoder_Ranking_data> > nowcoder_contest_vector;  // 排序后的排名数组\n        map<long long int, long long int> nowcoder_contest_list_max_submissionId;  // 榜单最大提交ID\n        queue<Listen_to_the_competition_Template> Listen_to_the_competition_queue;  // 待监听比赛队列\n        map<long long int, long long int> Stop_monitoring_the_competition;  // 待停止监听比赛列表\n        map<string, int> Unrecorded_Assessment_Status_Map;  // 需要过滤的评估状态\n        map<long long int, map<long long int, int, Evaluation_Data_cmp> >\n            Time_of_sealing_Submit_Map;  // 封榜后提交记录\n\n        /**\n         * @brief 榜单更新核心逻辑\n         *\n         * 执行以下操作：\n         * 1. 从队列获取待更新比赛\n         * 2. 加载最新评估数据\n         * 3. 计算最新排名\n         * 4. 更新缓存数据\n         */\n        void List_update();\n\n        /**\n         * @brief 榜单更新任务协调器\n         *\n         * 职责：\n         * 1. 监控监听队列\n         * 2. 分配更新任务\n         * 3. 处理异常情况\n         * 4. 维持更新循环\n         */\n        void List_Update_Distribution_Center();\n\n        /**\n         * @brief 单比赛榜单更新\n         * @param contestId 需要更新的比赛ID\n         * @return 操作状态码\n         */\n        int nowcoder_contest_list_update(long long int contestId);\n\n        /**\n         * @brief 排名数据更新器\n         * @param contestId 比赛ID\n         * @param contest_info_template 比赛元数据\n         * @param evaluation_data_template 评估数据\n         * @param Supplementary_order 是否为补充更新\n         * @return 操作状态码\n         */\n        int update_ac_nowcoder_ranking_data(long long int contestId,Contest_Info_Template contest_info_template,\n                                          Evaluation_Data_Template evaluation_data_template,bool Supplementary_order);\n        Thread_Pool::Thread_Pool ac_nowcoder_rankings_server_thread_pool;  // 任务执行池\n        int Shutdown_bj = 0;  // 服务器状态标志\n\n        /**\n         * @brief 榜单生成器\n         * @param contest 比赛ID字符串\n         * @return 格式化后的榜单HTML/JSON\n         */\n        string get_nowcoder_contest_list(long long int contestId);\n        string get_nowcoder_contest_info(long long int contestId);\n\n        /**\n         * @brief 添加新比赛\n         * @param contestId 比赛ID\n         * @param cookie 认证cookie\n         * @param sealing_Status_code 封榜状态码\n         * @param Time_of_sealing 封榜时间(ms)\n         * @param Time_of_release 解封时间(ms)\n         * @return 操作状态码\n         */\n        int add_Contest_Info(long long int contestId, string cookie,int sealing_Status_code,long long int Time_of_sealing,long long int Time_of_release);\n\n        /**\n         * @brief 时间字符串转换器\n         * @param time_str 格式为\"YYYY-MM-DD HH:MM:SS\"的时间字符串\n         * @return 毫秒级时间戳，解析失败返回-1\n         */\n        long long convert_time_string_to_ms(const std::string& time_str) {\n            Time_data td;\n            if (sscanf(time_str.c_str(), \"%d-%d-%d %d:%d:%d\",\n                       &td.year, &td.month, &td.day,\n                       &td.hour, &td.minute, &td.second) != 6) {\n                // 处理解析失败\n                return -1;\n                       }\n\n            tm tm_time = {};\n            tm_time.tm_year = td.year - 1900;\n            tm_time.tm_mon = td.month - 1;\n            tm_time.tm_mday = td.day;\n            tm_time.tm_hour = td.hour;\n            tm_time.tm_min = td.minute;\n            tm_time.tm_sec = td.second;\n            tm_time.tm_isdst = -1; // 自动判断夏令时\n\n            time_t sec = mktime(&tm_time);\n            return static_cast<long long>(sec) * 1000;\n        }\n    };\n} // ac_nowcoder_rankings_server\n// 下一个版本计划实现Evaluation_Data_Template的记忆化互通\n#endif //AC_NOWCODER_RANKINGS_SERVER_H\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h b/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h
+--- a/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h	(revision 3f924156af7cba3d00f17c5025be113784a34797)
++++ b/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h	(date 1754307323925)
+@@ -171,8 +171,9 @@
+          * @param contest 比赛ID字符串
+          * @return 格式化后的榜单HTML/JSON
+          */
+-        string get_nowcoder_contest_list(long long int contestId);
++        string get_nowcoder_contest_list(long long int contestId,int idx_begin,int size);
+         string get_nowcoder_contest_info(long long int contestId);
++        string get_nowcoder_contest_list_info(long long int contestId);
+ 
+         /**
+          * @brief 添加新比赛
+Index: ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//\n// Created by fsptd on 25-5-21.\n//\n#include \"../ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h\"\n\nnamespace ac_nowcoder_rankings_server {\n    /**\n     * @brief 更新牛客比赛排行榜数据\n     * @param contestId 比赛ID\n     * @return 返回操作状态码(1表示成功，2表示比赛已结束)\n     *\n     * 该函数负责处理比赛提交记录并更新排行榜数据，主要功能包括：\n     * 1. 线程安全地访问和修改比赛相关数据结构\n     * 2. 处理常规提交记录和补充提交记录\n     * 3. 更新用户排名和题目统计信息\n     * 4. 维护比赛的AC状态和首杀标记\n     * 5. 处理封存记录的解封逻辑\n     *\n     * 详细流程:\n     * - 锁定比赛map、set和封存提交记录的互斥锁\n     * - 获取比赛模板信息(包含开始/结束时间/解封时间等)\n     * - 检查比赛是否结束且无补充记录，若是则直接返回\n     * - 获取并更新比赛的最大提交ID\n     * - 主评估记录处理:\n     *   * 跳过已处理的记录和比赛结束后的提交\n     *   * 调用update_ac_nowcoder_ranking_data更新排名(模式0)\n     * - 补充评估记录处理:\n     *   * 检查提交时间是否有效\n     *   * 调用update_ac_nowcoder_ranking_data更新排名(模式1)\n     *   * 标记无效记录以便清理\n     * - 清理已处理的补充记录\n     * - 解封榜单处理:\n     *   * 检查解封条件(封存状态、无补充记录、解封时间到达)\n     *   * 处理封存记录(模式2)\n     *   * 清除封存记录\n     * - 解锁所有互斥锁并返回状态码\n     *\n     * 注意事项:\n     * - 所有共享数据访问都通过互斥锁保护\n     * - 比赛结束后仍会处理补充记录和封存记录\n     * - 三种处理模式:\n     *   * 0: 主评估记录\n     *   * 1: 补充评估记录\n     *   * 2: 解封记录\n     * - 罚时规则: 每次错误提交增加20分钟\n     * - 自动初始化新用户数据结构\n     * - 返回状态码说明:\n     *   * 1: 处理成功\n     *   * 2: 比赛已结束且无补充记录\n     */\n    int ac_nowcoder_rankings_server::nowcoder_contest_list_update(long long int contestId) {\n        // 锁定比赛用户排名和题目统计数据的互斥锁\n        nowcoder_contest_map_mtx[contestId].lock();\n        nowcoder_contest_set_mtx[contestId].lock();\n        Time_of_sealing_Submit_Map_mtx[contestId].lock();\n        // 获取比赛模板信息\n        Contest_Info_map_mtx.lock();\n        Contest_Info_Template contest_info_template = Contest_Info_map[contestId];\n        Contest_Info_map_mtx.unlock();\n\n        // 检查比赛是否结束且无补充记录\n        if (Memorize_the_assessment_records_Supplementary_order[contestId].size() == 0 && contest_info_template.\n            contestEndTime <= time(nullptr) * 1000) {\n            nowcoder_contest_set_mtx[contestId].unlock();\n            nowcoder_contest_map_mtx[contestId].unlock();\n            return 2; // 比赛已结束且无补充记录\n        }\n\n        // 获取并更新最大提交ID\n        nowcoder_contest_list_max_submissionId_mtx.lock();\n        if (nowcoder_contest_list_max_submissionId.find(contestId) == nowcoder_contest_list_max_submissionId.end()) {\n            nowcoder_contest_list_max_submissionId[contestId] = 0;\n        }\n        int max_submissionId = nowcoder_contest_list_max_submissionId[contestId];\n        nowcoder_contest_list_max_submissionId_mtx.unlock();\n\n        // 处理主评估记录\n        for (auto &x: Memorize_the_assessment_records[contestId]) {\n            if (x.first == max_submissionId) break;\n            if (x.second.get_submit_time() >= contest_info_template.contestEndTime) continue;\n            update_ac_nowcoder_ranking_data(contestId, contest_info_template, x.second, 0);\n        }\n\n        // 处理补充评估记录\n        vector<long long int> budanwancheng;\n        for (auto &x: Memorize_the_assessment_records_Supplementary_order[contestId]) {\n            if (x.first) {\n                if (Memorize_the_assessment_records[contestId][x.first].get_submit_time() >= contest_info_template.\n                    contestEndTime) {\n                    budanwancheng.push_back(x.first);\n                    continue;\n                }\n                update_ac_nowcoder_ranking_data(contestId, contest_info_template,\n                                                Memorize_the_assessment_records[contestId][x.first], 1);\n            }\n        }\n        // 清理已处理的补充记录\n        for (auto x: budanwancheng) {\n            Memorize_the_assessment_records_Supplementary_order[contestId].erase(x);\n        }\n        //解封榜单，处理封存记录\n        if (contest_info_template.sealing_Status_code && Memorize_the_assessment_records_Supplementary_order[contestId].\n            size() == 0 && Time_of_sealing_Submit_Map[\n                contestId].size() > 0 && contest_info_template.Time_of_release <= time(nullptr) * 1000) {\n            for (auto &x: Time_of_sealing_Submit_Map[contestId]) {\n                if (Memorize_the_assessment_records[contestId][x.first].get_submit_time() >= contest_info_template.\n                    contestEndTime)\n                    continue;\n\n                update_ac_nowcoder_ranking_data(contestId, contest_info_template,\n                                                Memorize_the_assessment_records[contestId][x.first], 2);\n            }\n            Time_of_sealing_Submit_Map[contestId].clear();\n        }\n        nowcoder_contest_vector_mtx[contestId].lock();\n        int pm = 0,i=1;\n        ac_nowcoder_Ranking_data ac_nowcoder_Ranking_data1;\n        for (auto &item: nowcoder_contest_set[contestId]) {\n            if (!(item.acceptedCount == ac_nowcoder_Ranking_data1.acceptedCount && item.penalty_Time ==\n                ac_nowcoder_Ranking_data1.penalty_Time)) {\n                pm++;\n            }\n            item.ranking = pm;\n            nowcoder_contest_vector[contestId].push_back(item);\n        }\n        nowcoder_contest_vector_mtx[contestId].unlock();\n\n        // 解锁互斥锁\n        nowcoder_contest_set_mtx[contestId].unlock();\n        nowcoder_contest_map_mtx[contestId].unlock();\n        Time_of_sealing_Submit_Map_mtx[contestId].unlock();\n        return 1; // 处理成功\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp b/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp
+--- a/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp	(revision 3f924156af7cba3d00f17c5025be113784a34797)
++++ b/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp	(date 1754306775254)
+@@ -115,6 +115,7 @@
+         nowcoder_contest_vector_mtx[contestId].lock();
+         int pm = 0,i=1;
+         ac_nowcoder_Ranking_data ac_nowcoder_Ranking_data1;
++        nowcoder_contest_vector[contestId].clear();
+         for (auto &item: nowcoder_contest_set[contestId]) {
+             if (!(item.acceptedCount == ac_nowcoder_Ranking_data1.acceptedCount && item.penalty_Time ==
+                 ac_nowcoder_Ranking_data1.penalty_Time)) {
+Index: ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list_info.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list_info.cpp b/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list_info.cpp
+new file mode 100644
+--- /dev/null	(date 1754307660329)
++++ b/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list_info.cpp	(date 1754307660329)
+@@ -0,0 +1,142 @@
++//
++// Created by fsptd on 25-8-4.
++//
++#include <string>
++#include <map>
++#include "../Evaluation Data Template/Evaluation_Data_Template.h"
++#include "../ac_nowcoder_rankings_server.h"
++#include "../tools_class/time_class.h"
++#include"nlohmann/json.hpp"
++/*
++*namespace ac_nowcoder_rankings_server {
++    // 比赛信息模板类
++    struct problemData {
++        std::string name; // 题目名称
++        int status; // 题目状态
++        int acceptedCount; // 通过次数
++        int submitCount; // 提交次数
++    };
++    class Contest_Info_Template {
++    public:
++        std::string contestname; // 比赛名称
++        long long int contestId; // 比赛ID
++        int Title_number; // 题目数量
++        long long int contestEndTime; // 比赛结束时间
++        long long int contestBeginTime; // 比赛开始时间
++        int sealing_Status_code;//本次比赛是否存在封榜
++        long long int Time_of_sealing;//封榜时间
++        long long int Time_of_release;//解榜时间
++        std::string rankType; // 排名类型
++        std::map<std::string , problemData>problemData_map; // 题目数据映射表，键为题目ID，值为题目数据
++    };
++} // ac_nowcoder_rankings_server
++
++namespace ac_nowcoder_rankings_server {
++    // 题目状态结构体，用于记录题目的相关状态信息
++    struct Title_status {
++        std::string Title_Name;
++        int Submission_status=0;  // 提交状态：0表示未提交，1表示已提交
++        int Number_of_errors=0;   // 错误提交次数：记录用户提交该题目时的错误次数
++        int status=0;             // 题目状态：0表示未完成，1表示已完成
++        long long int AC_time=0;  // 完成时间：记录用户完成该题目的时间，单位为毫秒
++        bool first_Blood=false;       // 是否为首杀：true表示用户是第一个完成该题目的人，false表示不是
++        int Submitted_not_completed_num;//已经提交但未完成测评的测评条数。
++        std::map<long long int,Evaluation_Data_Template>Submission_record;
++
++    };
++
++    // 用户排名数据类，用于存储用户在排行榜中的相关信息
++    class ac_nowcoder_Ranking_data {
++    public:
++        long long int  userid=-1;            // 用户ID：唯一标识用户
++        std::string username="";          // 用户名：用户的昵称
++        long long int  ranking=-1;           // 当前排名：用户在排行榜中的位置
++        long long int  acceptedCount=0;     // 已通过题目数量：用户已完成的题目数量
++        long long int penalty_Time=0;      // 罚时：用户的总罚时，单位为毫秒
++        long long int ac_Finally_time=0;   // 最后通过时间：用户最后通过题目的时间，单位为毫秒
++        std::map<std::string,Title_status>Title_status_map; // 题目状态映射表：记录用户每个题目的状态信息
++
++        // 重载小于运算符，用于比较两个用户的排名
++        bool operator < (const ac_nowcoder_Ranking_data& p1) const {
++            // 优先比较通过题目数量，通过题目数量多的用户排名靠前
++            if (acceptedCount == p1.acceptedCount) {
++                // 如果通过题目数量相同，则比较罚时，罚时少的用户排名靠前
++                if (penalty_Time == p1.penalty_Time) {
++                    // 如果罚时也相同，则比较最后通过时间，时间早的用户排名靠前
++                    if (ac_Finally_time == p1.ac_Finally_time) {
++                        // 如果最后通过时间也相同，则比较用户名，按字典序排列
++                        if (username == p1.username)
++                            return userid < p1.userid;  // 如果用户名相同，则比较用户ID，ID小的用户排名靠前
++                        return username < p1.username;
++                    }
++                    return ac_Finally_time < p1.ac_Finally_time;
++                }
++                return penalty_Time < p1.penalty_Time;
++            }
++            return acceptedCount > p1.acceptedCount;
++        }
++    };
++}
++
++
++ *
++ */
++namespace ac_nowcoder_rankings_server {
++    /**
++     * @brief 获取指定比赛ID的牛客网比赛列表信息
++     *
++     * 该函数根据传入的比赛ID，从Contest_Info_map中获取对应的比赛信息，
++     * 并将其序列化为JSON字符串返回。
++     *
++     * @param contestId 比赛ID
++     * @return string 序列化后的比赛信息JSON字符串
++     */
++    string ac_nowcoder_rankings_server::get_nowcoder_contest_list_info(long long int contestId) {
++        string ac_nowcoder_rankings_server_str; // 存储最终生成的JSON字符串
++        nlohmann::json ac_nowcoder_rankings_server_json; // 用于构建JSON数据的临时对象
++        ac_nowcoder_rankings_server_json["contestId"] = contestId; // 将比赛ID添加到JSON中
++
++        try {
++            Contest_Info_map_mtx.lock(); // 加锁以保护共享资源Contest_Info_map
++            // 检查比赛ID是否存在
++            if (Contest_Info_map.find(contestId) == Contest_Info_map.end()) {
++                Contest_Info_map_mtx.unlock(); // 解锁
++                throw std::invalid_argument("Contest ID not found");
++            }
++            Contest_Info_Template contest_info_template = Contest_Info_map[contestId]; // 获取指定比赛ID的比赛信息
++
++            // 将比赛信息的各项属性添加到JSON对象中
++            ac_nowcoder_rankings_server_json["contestname"] = contest_info_template.contestname;
++            ac_nowcoder_rankings_server_json["contestId"] = contest_info_template.contestId;
++            ac_nowcoder_rankings_server_json["Title_number"] = contest_info_template.Title_number;
++            ac_nowcoder_rankings_server_json["contestEndTime"] = contest_info_template.contestEndTime;
++            ac_nowcoder_rankings_server_json["contestBeginTime"] = contest_info_template.contestBeginTime;
++            ac_nowcoder_rankings_server_json["sealing_Status_code"] = contest_info_template.sealing_Status_code;
++            ac_nowcoder_rankings_server_json["Time_of_sealing"] = contest_info_template.Time_of_sealing;
++            ac_nowcoder_rankings_server_json["Time_of_release"] = contest_info_template.Time_of_release;
++            ac_nowcoder_rankings_server_json["rankType"] = contest_info_template.rankType;
++
++            // 遍历题目数据映射表，将每个题目的信息添加到JSON对象中
++            for (const auto &item: contest_info_template.problemData_map) {
++                ac_nowcoder_rankings_server_json["problemData_map"][item.first]["name"] = item.second.name;
++                ac_nowcoder_rankings_server_json["problemData_map"][item.first]["status"] = item.second.status;
++                ac_nowcoder_rankings_server_json["problemData_map"][item.first]["acceptedCount"] = item.second.acceptedCount;
++                ac_nowcoder_rankings_server_json["problemData_map"][item.first]["submitCount"] = item.second.submitCount;
++            }
++
++            ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump(); // 将JSON对象序列化为字符串
++        } catch (const std::exception& e) {
++            // 处理异常并返回错误信息
++            ac_nowcoder_rankings_server_json["error"] = e.what();
++            ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump();
++        } catch (...) {
++            // 处理未知异常
++            ac_nowcoder_rankings_server_json["error"] = "Unknown error occurred";
++            ac_nowcoder_rankings_server_str = ac_nowcoder_rankings_server_json.dump();
++        }
++
++        Contest_Info_map_mtx.unlock(); // 解锁
++
++        return ac_nowcoder_rankings_server_str; // 返回序列化后的比赛信息或错误信息
++    }
++}
+Index: CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>cmake_minimum_required(VERSION 3.31)\nproject(ac_nowcoder_rankings)\nset(CMAKE_CXX_STANDARD 20)\nadd_executable(ac_nowcoder_rankings main.cpp\n        ac_nowcoder_rankings_server/ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.cpp\n        ac_nowcoder_rankings_server/ac_nowcoder_Ranking_data/ac_nowcoder_Ranking_data.h\n        ac_nowcoder_rankings_server/Contest_Info_Template/Contest_Info_Template.cpp\n        ac_nowcoder_rankings_server/Contest_Info_Template/Contest_Info_Template.h\n        \"ac_nowcoder_rankings_server/Evaluation Data Template/Evaluation_Data_Template.cpp\"\n        \"ac_nowcoder_rankings_server/Evaluation Data Template/Evaluation_Data_Template.h\"\n        ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp\n        ac_nowcoder_rankings_server/List_Update/List_update.cpp\n        ac_nowcoder_rankings_server/List_Update/List_Update_Distribution_Center.cpp\n        ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp\n        ac_nowcoder_rankings_server/Listen_to_the_competition_Template/Listen_to_the_competition_Template.cpp\n        ac_nowcoder_rankings_server/Listen_to_the_competition_Template/Listen_to_the_competition_Template.h\n        ac_nowcoder_rankings_server/tools_class/get_time_ms.cpp\n        ac_nowcoder_rankings_server/tools_class/time_class.cpp\n        ac_nowcoder_rankings_server/tools_class/time_class.h\n        ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.cpp\n        ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h\n        ac_nowcoder_rankings_server/add_Contest_Info.cpp\n        ac_nowcoder_rankings_server/Get_Evaluation_Data.cpp\n        ac_nowcoder_rankings_server/Get_Evaluation_Data_Single_request.cpp\n        ac_nowcoder_rankings_server/Task_distribution_center.cpp\n        include/Thread_Pool/Thread_Pool.h\n        include/HTTP_Server_Framework/HTTP_Server_Framework.h\n        ac_nowcoder_rankings_server/List_Update/update_ac_nowcoder_ranking_data.cpp\n        ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp\n        ac_nowcoder_rankings_server/Update_Memorize_the_assessment_records_str.cpp\n        ac_nowcoder_rankings_server/List_Update/update_Memorize_the_assessment_records_json_str.cpp\n)\ntarget_include_directories(ac_nowcoder_rankings PRIVATE include)\ntarget_link_directories(ac_nowcoder_rankings PRIVATE lib)\ntarget_link_libraries(ac_nowcoder_rankings PRIVATE libHTTP_Server_Framework.so libThread_Pool.so)
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	(revision 3f924156af7cba3d00f17c5025be113784a34797)
++++ b/CMakeLists.txt	(date 1754307269818)
+@@ -29,6 +29,7 @@
+         ac_nowcoder_rankings_server/get_nowcoder_contest_info/get_nowcoder_contest_info.cpp
+         ac_nowcoder_rankings_server/Update_Memorize_the_assessment_records_str.cpp
+         ac_nowcoder_rankings_server/List_Update/update_Memorize_the_assessment_records_json_str.cpp
++        ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list_info.cpp
+ )
+ target_include_directories(ac_nowcoder_rankings PRIVATE include)
+ target_link_directories(ac_nowcoder_rankings PRIVATE lib)
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"BackendCodeEditorMiscSettings\">\n    <option name=\"/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue\" value=\"true\" type=\"bool\" />\n    <option name=\"/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue\" value=\"true\" type=\"bool\" />\n    <option name=\"/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue\" value=\"false\" type=\"bool\" />\n  </component>\n  <component name=\"CMakePresetLoader\">{\n  &quot;useNewFormat&quot;: true\n}</component>\n  <component name=\"CMakeProjectFlavorService\">\n    <option name=\"flavorId\" value=\"CMakePlainProjectFlavor\" />\n  </component>\n  <component name=\"CMakeReloadState\">\n    <option name=\"reloaded\" value=\"true\" />\n  </component>\n  <component name=\"CMakeRunConfigurationManager\">\n    <generated>\n      <config projectName=\"ac_nowcoder_rankings\" targetName=\"ac_nowcoder_rankings\" />\n    </generated>\n  </component>\n  <component name=\"CMakeSettings\">\n    <configurations>\n      <configuration PROFILE_NAME=\"Debug\" ENABLED=\"true\" CONFIG_NAME=\"Debug\" />\n    </configurations>\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"65a517c5-2208-44d4-a73f-25819588a93d\" name=\"更改\" comment=\"1.2.4//删除不成熟设计\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ClangdSettings\">\n    <option name=\"formatViaClangd\" value=\"false\" />\n  </component>\n  <component name=\"ExecutionTargetManager\" SELECTED_TARGET=\"CMakeBuildProfile:Debug\" />\n  <component name=\"Git.Settings\">\n    <option name=\"PUSH_AUTO_UPDATE\" value=\"true\" />\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\">{\n  &quot;lastFilter&quot;: {}\n}</component>\n  <component name=\"GithubPullRequestsUISettings\">{\n  &quot;selectedUrlAndAccountId&quot;: {\n    &quot;url&quot;: &quot;https://github.com/td1336065617/ac_nowcoder_rankings.git&quot;,\n    &quot;accountId&quot;: &quot;feb9955f-f8ec-46ca-9a2b-9179443ccedc&quot;\n  }\n}</component>\n  <component name=\"HighlightingSettingsPerFile\">\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n    <setting file=\"mock:///dummy.cpp\" root0=\"SKIP_HIGHLIGHTING\" />\n  </component>\n  <component name=\"ProjectApplicationVersion\">\n    <option name=\"ide\" value=\"CLion\" />\n    <option name=\"majorVersion\" value=\"2025\" />\n    <option name=\"minorVersion\" value=\"1.1\" />\n    <option name=\"productBranch\" value=\"Classic\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;customColor&quot;: &quot;&quot;,\n  &quot;associatedIndex&quot;: 7\n}</component>\n  <component name=\"ProjectId\" id=\"2xPL12RLWkDdUZLZTpR3AQ2ikfF\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;CMake 应用程序.ac_nowcoder_rankings.executor&quot;: &quot;Debug&quot;,\n    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,\n    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,\n    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/home/fsptd/桌面/ac_nowcoder_rankings/lib&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RecentsManager\">\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/lib\" />\n      <recent name=\"$PROJECT_DIR$/include/Thread_Pool\" />\n      <recent name=\"$PROJECT_DIR$/include\" />\n    </key>\n  </component>\n  <component name=\"RunManager\">\n    <configuration name=\"ac_nowcoder_rankings\" type=\"CMakeRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"ac_nowcoder_rankings\" TARGET_NAME=\"ac_nowcoder_rankings\" CONFIG_NAME=\"Debug\" RUN_TARGET_PROJECT_NAME=\"ac_nowcoder_rankings\" RUN_TARGET_NAME=\"ac_nowcoder_rankings\">\n      <method v=\"2\">\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n  </component>\n  <component name=\"SvnConfiguration\">\n    <configuration>$USER_HOME$/.subversion</configuration>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"默认任务\">\n      <changelist id=\"65a517c5-2208-44d4-a73f-25819588a93d\" name=\"更改\" comment=\"\" />\n      <created>1747834542954</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1747834542954</updated>\n      <workItem from=\"1747834544243\" duration=\"168000\" />\n      <workItem from=\"1747834734365\" duration=\"255000\" />\n      <workItem from=\"1747835013536\" duration=\"2000\" />\n      <workItem from=\"1747835293461\" duration=\"121000\" />\n      <workItem from=\"1747835516763\" duration=\"2000\" />\n      <workItem from=\"1747836327233\" duration=\"693000\" />\n      <workItem from=\"1747837197238\" duration=\"387000\" />\n      <workItem from=\"1747837797051\" duration=\"56000\" />\n      <workItem from=\"1747837876644\" duration=\"2625000\" />\n      <workItem from=\"1747843593132\" duration=\"106000\" />\n      <workItem from=\"1747884014380\" duration=\"14369000\" />\n      <workItem from=\"1748265367391\" duration=\"2876000\" />\n      <workItem from=\"1748241373940\" duration=\"657000\" />\n      <workItem from=\"1748325402986\" duration=\"1837000\" />\n      <workItem from=\"1749731202469\" duration=\"2974000\" />\n      <workItem from=\"1750943503677\" duration=\"923000\" />\n      <workItem from=\"1750918528541\" duration=\"369000\" />\n      <workItem from=\"1750918908558\" duration=\"6623000\" />\n      <workItem from=\"1750944603731\" duration=\"3808000\" />\n      <workItem from=\"1751283731188\" duration=\"5000\" />\n      <workItem from=\"1751269350278\" duration=\"1241000\" />\n      <workItem from=\"1751435384507\" duration=\"191000\" />\n      <workItem from=\"1751435587132\" duration=\"13505000\" />\n      <workItem from=\"1752094133639\" duration=\"667000\" />\n      <workItem from=\"1752674792727\" duration=\"2085000\" />\n      <workItem from=\"1752651916704\" duration=\"216000\" />\n      <workItem from=\"1752652151579\" duration=\"5422000\" />\n      <workItem from=\"1752762618683\" duration=\"1650000\" />\n      <workItem from=\"1752993839076\" duration=\"612000\" />\n      <workItem from=\"1753074926538\" duration=\"1205000\" />\n      <workItem from=\"1753335552883\" duration=\"415000\" />\n      <workItem from=\"1753335987827\" duration=\"5062000\" />\n      <workItem from=\"1754313210943\" duration=\"60000\" />\n      <workItem from=\"1754284530350\" duration=\"309000\" />\n      <workItem from=\"1754284850724\" duration=\"3752000\" />\n      <workItem from=\"1754292192991\" duration=\"1360000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"更新\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1747834749365</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1747834749365</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"更新\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1747843674536</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1747843674536</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"更新\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1747916272904</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1747916272904</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"更新\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1747916426667</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1747916426667</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"更新\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1750914826734</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1750914826734</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"更新\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1750923689895</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1750923689895</updated>\n    </task>\n    <task id=\"LOCAL-00007\" summary=\"更新\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1750944713699</created>\n      <option name=\"number\" value=\"00007\" />\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1750944713699</updated>\n    </task>\n    <task id=\"LOCAL-00008\" summary=\"更新\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1750945363554</created>\n      <option name=\"number\" value=\"00008\" />\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1750945363554</updated>\n    </task>\n    <task id=\"LOCAL-00009\" summary=\"更新 基本完成测评信息更新入榜单的函数，下一步工作，检查功能是否存在缺陷。2025 6 26 22 53\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1750949614407</created>\n      <option name=\"number\" value=\"00009\" />\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1750949614407</updated>\n    </task>\n    <task id=\"LOCAL-00010\" summary=\"完善注释\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1750950126978</created>\n      <option name=\"number\" value=\"00010\" />\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1750950126978</updated>\n    </task>\n    <task id=\"LOCAL-00011\" summary=\"完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751468401989</created>\n      <option name=\"number\" value=\"00011\" />\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751468401989</updated>\n    </task>\n    <task id=\"LOCAL-00012\" summary=\"完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751468527426</created>\n      <option name=\"number\" value=\"00012\" />\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751468527426</updated>\n    </task>\n    <task id=\"LOCAL-00013\" summary=\"1.2.1\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751468804052</created>\n      <option name=\"number\" value=\"00013\" />\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751468804052</updated>\n    </task>\n    <task id=\"LOCAL-00014\" summary=\"1.2.1\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751469301129</created>\n      <option name=\"number\" value=\"00014\" />\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751469301129</updated>\n    </task>\n    <task id=\"LOCAL-00015\" summary=\"1.2.1\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751469336274</created>\n      <option name=\"number\" value=\"00015\" />\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751469336274</updated>\n    </task>\n    <task id=\"LOCAL-00016\" summary=\"1.2.2 // 编写后端接口\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752653089284</created>\n      <option name=\"number\" value=\"00016\" />\n      <option name=\"presentableId\" value=\"LOCAL-00016\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752653089284</updated>\n    </task>\n    <task id=\"LOCAL-00017\" summary=\"1.2.3//更新HTTP库，完善返回数据的数据更新模式\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1753339409019</created>\n      <option name=\"number\" value=\"00017\" />\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1753339409019</updated>\n    </task>\n    <task id=\"LOCAL-00018\" summary=\"1.2.3//更新HTTP库，完善返回数据的数据更新模式\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1753352002557</created>\n      <option name=\"number\" value=\"00018\" />\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1753352002557</updated>\n    </task>\n    <task id=\"LOCAL-00019\" summary=\"1.2.4//删除不成熟设计\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1754285619272</created>\n      <option name=\"number\" value=\"00019\" />\n      <option name=\"presentableId\" value=\"LOCAL-00019\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1754285619272</updated>\n    </task>\n    <task id=\"LOCAL-00020\" summary=\"1.2.4//删除不成熟设计\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1754285636779</created>\n      <option name=\"number\" value=\"00020\" />\n      <option name=\"presentableId\" value=\"LOCAL-00020\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1754285636779</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"21\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VCPKGProject\">\n    <isAutomaticCheckingOnLaunch value=\"false\" />\n    <isAutomaticFoundErrors value=\"true\" />\n    <isAutomaticReloadCMake value=\"true\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"RECENT_FILTERS\">\n      <map>\n        <entry key=\"Branch\">\n          <value>\n            <list>\n              <RecentGroup>\n                <option name=\"FILTER_VALUES\">\n                  <option value=\"master\" />\n                </option>\n              </RecentGroup>\n              <RecentGroup>\n                <option name=\"FILTER_VALUES\">\n                  <option value=\"origin/master\" />\n                </option>\n              </RecentGroup>\n            </list>\n          </value>\n        </entry>\n      </map>\n    </option>\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State>\n              <option name=\"FILTERS\">\n                <map>\n                  <entry key=\"branch\">\n                    <value>\n                      <list>\n                        <option value=\"master\" />\n                      </list>\n                    </value>\n                  </entry>\n                </map>\n              </option>\n            </State>\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"更新\" />\n    <MESSAGE value=\"更新 基本完成测评信息更新入榜单的函数，下一步工作，检查功能是否存在缺陷。2025 6 26 22 53\" />\n    <MESSAGE value=\"完善注释\" />\n    <MESSAGE value=\"完成排序系统，补单系统，新增封榜相关系统。完善注释。&#10;下一阶段编写获取榜单接口，以及测评数据导出接口，测试功能，然后开发榜单前端，尝试对接icpc live3。\" />\n    <MESSAGE value=\"1.2.1\" />\n    <MESSAGE value=\"1.2.2 // 编写后端接口\" />\n    <MESSAGE value=\"1.2.3//更新HTTP库，完善返回数据的数据更新模式\" />\n    <MESSAGE value=\"1.2.4//删除不成熟设计\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"1.2.4//删除不成熟设计\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 3f924156af7cba3d00f17c5025be113784a34797)
++++ b/.idea/workspace.xml	(date 1754309032620)
+@@ -29,10 +29,12 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="65a517c5-2208-44d4-a73f-25819588a93d" name="更改" comment="1.2.4//删除不成熟设计">
++      <change afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list_info.cpp" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/List_Update/nowcoder_contest_list_update.cpp" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/ac_nowcoder_rankings_server.h" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/add_Contest_Info.cpp" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ac_nowcoder_rankings_server/get_nowcoder_contest_list/get_nowcoder_contest_list.cpp" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -251,6 +253,11 @@
+     </key>
+   </component>
+   <component name="RunManager">
++    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
++      <method v="2">
++        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
++      </method>
++    </configuration>
+     <configuration name="ac_nowcoder_rankings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ac_nowcoder_rankings" TARGET_NAME="ac_nowcoder_rankings" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ac_nowcoder_rankings" RUN_TARGET_NAME="ac_nowcoder_rankings">
+       <method v="2">
+         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+@@ -303,6 +310,7 @@
+       <workItem from="1754284530350" duration="309000" />
+       <workItem from="1754284850724" duration="3752000" />
+       <workItem from="1754292192991" duration="1360000" />
++      <workItem from="1754294761790" duration="4033000" />
+     </task>
+     <task id="LOCAL-00001" summary="更新">
+       <option name="closed" value="true" />
